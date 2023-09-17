@@ -3,7 +3,7 @@ package org.infantaelena.ies.psp.ejerciciosRepaso;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class ejerciciosRepaso1 {
+public class EjerciciosRepaso1 {
 
     public static void main(String[] args) {
 
@@ -14,7 +14,7 @@ public class ejerciciosRepaso1 {
 
     }
 
-    public static void ejercicio01(){
+    public static void ejercicio01() {
         //Leer 5 números y mostrarlos en el mismo orden introducido.
 
         int[] arrayInt = new int[5];
@@ -22,7 +22,7 @@ public class ejerciciosRepaso1 {
 
         System.out.println("Introduce 5 números");
         for (int i = 0; i < 5; i++) {
-            System.out.print("Número " + (i+1) + ": ");
+            System.out.print("Número " + (i + 1) + ": ");
             arrayInt[i] = sc.nextInt();
         }
 
@@ -32,7 +32,8 @@ public class ejerciciosRepaso1 {
         }
 
     }
-    public static void ejercicio02(){
+
+    public static void ejercicio02() {
         //Leer por teclado dos tablas de 10 números enteros y mezclarlas en una tercera de la forma: el 1º de A, el 1º de B, el 2º de A, el 2º de B, etc.
 
         Scanner sc = new Scanner(System.in);
@@ -43,27 +44,28 @@ public class ejerciciosRepaso1 {
 
         System.out.println("Introduce 10 números para la primera tabla");
         for (int i = 0; i < 10; i++) {
-            System.out.print("Número " + (i+1) + ": ");
+            System.out.print("Número " + (i + 1) + ": ");
             tabla1[i] = sc.nextInt();
         }
 
         System.out.println("Introduce 10 números para la segunda tabla");
         for (int i = 0; i < 10; i++) {
-            System.out.print("Número " + (i+1) + ": ");
+            System.out.print("Número " + (i + 1) + ": ");
             tabla2[i] = sc.nextInt();
         }
 
         for (int i = 0; i < 20; i += 2) {
-            tabla3[i] = tabla1[i/2];
-            tabla3[i+1] = tabla2[i/2];
+            tabla3[i] = tabla1[i / 2];
+            tabla3[i + 1] = tabla2[i / 2];
         }
 
         System.out.println("Estos son los números de las dos tablas intercalados:");
-        for (int i : tabla3){
+        for (int i : tabla3) {
             System.out.print(i + " ");
         }
     }
-    public static void ejercicio03(){
+
+    public static void ejercicio03() {
         //Leer 5 elementos numéricos que se introducirán ordenados de forma creciente. Éstos los guardaremos en un array
         //de tamaño 10. Leer un número N, e insertarlo en el lugar adecuado para que el array continúe ordenado.
 
@@ -73,7 +75,7 @@ public class ejerciciosRepaso1 {
 
         System.out.println("Introduce 5 números en orden creciente");
         for (int i = 0; i < 5; i++) {
-            System.out.print("Número " + (i+1) + ": ");
+            System.out.print("Número " + (i + 1) + ": ");
             arrayInt[i] = sc.nextInt();
         }
 
@@ -83,13 +85,13 @@ public class ejerciciosRepaso1 {
         int pos = 5;
 
         for (int i = 0; i < 5; i++) {
-            if (num < arrayInt[i]){
+            if (num < arrayInt[i]) {
                 pos = i;
                 break;
             }
         }
 
-        int aux = 0;
+        int aux;
         for (int i = pos; i < 6; i++) {
 
             aux = arrayInt[i];
@@ -103,7 +105,8 @@ public class ejerciciosRepaso1 {
             System.out.print(arrayInt[i] + " ");
         }
     }
-    public static void ejercicio03v2(){
+
+    public static void ejercicio03v2() {
 
         Scanner sc = new Scanner(System.in);
 
@@ -111,7 +114,7 @@ public class ejerciciosRepaso1 {
 
         System.out.println("Introduce 5 números");
         for (int i = 0; i < 5; i++) {
-            System.out.print("Número " + (i+1) + ": ");
+            System.out.print("Número " + (i + 1) + ": ");
             arrayInt[i] = sc.nextInt();
         }
 
@@ -122,7 +125,7 @@ public class ejerciciosRepaso1 {
         Arrays.sort(arrayInt);
 
         System.out.println("La colección de números ordenada");
-        for (int i : arrayInt){
+        for (int i : arrayInt) {
             System.out.print(i + " ");
         }
 
