@@ -7,13 +7,22 @@ public class ejercicio1_1 {
 
     public static void main(String[] args) {
 
-
+        for (String str : listarDirectorio("resources")){
+            System.out.println(str);
+        }
 
     }
 
+    /**
+     * Devuelve un array de strings con los nombres de los ficheros y directorios contenidos en el directorio actual.
+     * @return array de strings con los nombres de los ficheros y directorios contenidos en el directorio actual.
+     */
     public static String[] listarDirectorio(){
-        // Crea un método listarDirectorio() que devuelva una array con el listado del contenido
-        // (archivos y carpetas) de directorio actual. ¿Este método debería ser dinámico o estático? ¿Por qué?
+        // Crea un método listarDirectorio() que devuelva un array con el listado del contenido
+        // (archivos y carpetas) del directorio actual. ¿Este método debería ser dinámico o estático? ¿Por qué?
+
+        //Considero que debería ser estático porque para listar el contenido de un directorio no hace falta crear una
+        //instancia específica y además puedes llamarlo sin tener que crear ninguna instancia.
 
         String userDir = System.getProperty("user.dir");
         File directorioActual = new File(userDir);
@@ -26,14 +35,15 @@ public class ejercicio1_1 {
             System.err.println("Fallo en la ejecución por falta de permisos de lectura.");
         }
 
-        //Me tomo la libertad de escribir un mensaje de aviso en caso de que esté vacío
-        if (lista == null){
-            System.out.println("El directorio está vacío");
-        }
-
         return lista;
     }
 
+    /**
+     * Devuelve un array de strings con los nombres de los ficheros y directorios contenidos en el directorio indicado.
+     * Si el parámetro no es un directorio o no se tienen permisos de lectura devolverá null.
+     * @param directorio string con la ruta absoluta o relativa al directorio.
+     * @return array de strings con los nombres de los ficheros y directorios contenidos en el directorio indicado.
+     */
     public static String[] listarDirectorio(String directorio){
         //Crea un método listarDirectorio(String directorio) que devuelva una array con el listado del contenido del
         //directorio indicado como argumento siempre y cuando este sea un directorio y no un archivo. Pruébalo
@@ -58,14 +68,15 @@ public class ejercicio1_1 {
             return null;
         }*/
 
-        //Me tomo la libertad de escribir un mensaje de aviso en caso de que esté vacío
-        if (lista == null){
-            System.out.println("El directorio está vacío");
-        }
-
         return lista;
     }
 
+    /**
+     * Comprueba si existe un fichero en un directorio dado.
+     * @param directorio string con la ruta absoluta o relativa al directorio.
+     * @param fichero nombre del fichero a comprobar.
+     * @return true si el fichero se encuentra en el directorio y false en cualquier otro caso.
+     */
     public static boolean existeFichero(String directorio, String fichero){
         //Crea un método existeFichero(String directorio, String fichero) que compruebe si existe dicho fichero en el
         //directorio indicado.
@@ -124,7 +135,15 @@ public class ejercicio1_1 {
         File fichero = new File(path);
         File ficheroRenombrado = new File(fichero.getParent(), "DAM2_"+fichero.getName());
 
-        fichero.renameTo(ficheroRenombrado);
+        try{
+            if (fichero.renameTo(ficheroRenombrado)){
+                System.out.println("Fichero renombrado");
+            }else{
+                System.out.println("No se pudo renombrar el archivo.");
+            }
+        }catch (SecurityException e){
+            System.err.println("No se pudo renombrar el archivo. Faltan permisos de escritura.");
+        }
     }
 
     public static void borrarArchivo(String path){
@@ -135,14 +154,43 @@ public class ejercicio1_1 {
 
         File fichero = new File(path);
 
-        fichero.delete();
-
+        if (fichero.isFile()){
+            try{
+                if (fichero.delete()){
+                    System.out.println("Fichero borrado satisfactoriamente.");
+                }else{
+                    System.out.println("No se pudo borrar el archivo.");
+                }
+            }catch (SecurityException e){
+                System.err.println("No tienes permisos suficientes para borrar el archivo.");
+            }
+        }else{
+            System.out.println("La ruta introducida no corresponde con un fichero.");
+        }
     }
 
     public static void eliminarDirectorio(String ruta){
         //Crea un método eliminarDirectorio que reciba una ruta y elimine el directorio indicado por ella.
         //¿Elimina directorios con contenido? ¿Cómo se puede solucionar? Modifica el método para que elimine directorios
         //que contengan solo archivos o estén vacíos e indique que no puede hacerlo si contienen otros directorios.
+
+        File dir = new File(ruta);
+
+        try{
+
+            if (dir.isDirectory()){
+                if (dir.delete()){
+                    System.out.println("Directorio eliminado satisfactoriamente.");
+                }else{
+                    System.out.println("No se pudo eliminar el directorio");
+                }
+            }else{
+                System.out.println("La ruta no se corresponde con un directorio.");
+            }
+
+        }catch (SecurityException e){
+            System.err.println("No tienes permisos para eliminar el directorio.");
+        }
 
 
 
