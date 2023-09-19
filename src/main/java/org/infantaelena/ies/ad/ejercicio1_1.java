@@ -2,14 +2,18 @@ package org.infantaelena.ies.ad;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 public class ejercicio1_1 {
 
     public static void main(String[] args) {
 
-        for (String str : listarDirectorio("resources")){
-            System.out.println(str);
-        }
+        generarArchivo("src/main/resources/prueba/prueba1");
+        ShowInfo si = new ShowInfo("src/main/resources/prueba/prueba1");
+        ShowInfo si2 = new ShowInfo("src/main/resources/prueba/prueba1/DavidAyllon.txt");
+
+        System.out.println(si.showInfo());
+        System.out.println(si2.showInfo());
 
     }
 
@@ -81,7 +85,7 @@ public class ejercicio1_1 {
         //Crea un método existeFichero(String directorio, String fichero) que compruebe si existe dicho fichero en el
         //directorio indicado.
 
-        String[] ficheros = listarDirectorio(fichero);
+        String[] ficheros = listarDirectorio(directorio);
 
         if (ficheros != null){
             for (String str : ficheros){
@@ -89,11 +93,19 @@ public class ejercicio1_1 {
                     return true;
                 }
             }
+        }else{
+            System.err.println("Compruebe la ruta del directorio y/o los permisos de lectura.");
         }
 
         return false;
     }
 
+    /**
+     * Crea un archivo txt de nombre DavidAyllon en el directorio especificado. Si el directorio no existe, crea todos
+     * los directorios necesarios según la ruta especificada. Si hay conflicto con los permisos o el archivo ya existe,
+     * no generará el archivo.
+     * @param directorio ruta absoluta o relativa del directorio donde se desea generar el archivo.
+     */
     public static void generarArchivo(String directorio){
         //Crea un método generarArchivo que a partir de una ruta que se le pase como argumento, cree un archivo txt con
         // nombre TunombreTuapellido en la ruta en la que se le ha proporcionado. Presta atención a los posibles errores
@@ -101,14 +113,20 @@ public class ejercicio1_1 {
 
         File dir = new File(directorio);
 
-        if (!dir.exists()){
-            if (dir.mkdirs()){
-                System.out.println("El directorio no existe y no se puede crear.");
-                return;
-                //Me pareció demasiado lanzar la excepción
-                //throw new RuntimeException();
+        try{
+            if (!dir.exists()){
+                if (!dir.mkdirs()){
+                    System.out.println("El directorio no existe y no se puede crear.");
+                    return;
+                    //Me pareció demasiado lanzar la excepción
+                    //throw new RuntimeException();
+                }
             }
+        }catch (SecurityException e){
+            System.err.println("Conflicto con los permisos creando los directorios.");
+            return;
         }
+
 
         File fichero = new File(dir, "DavidAyllon.txt");
 
@@ -121,15 +139,20 @@ public class ejercicio1_1 {
 
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
         } catch (SecurityException e){
-            System.err.println("Fallo en la ejecución por falta de permisos de lectura.");
+            System.err.println("Fallo en la ejecución por falta de permisos de escritura.");
         }
 
     }
+
+    /**
+     * Renombra un archivo añadiendo delante DAM2_
+     * @param path ruta del archivo que se renombrará.
+     */
     public static void renombrarArchivo(String path){
         //Crea un método renombrarArchivo que coja un archivo cuyo path absoluto se le pase como argumento y lo renombre
         // añadiendo delante DAM2. Pruébalo con el archivo creado en el ejercicio anterior. El archivo antiguo, ¿desaparece?
+        //Sí, el archivo antiguo desaparece.
 
 
         File fichero = new File(path);
@@ -146,13 +169,27 @@ public class ejercicio1_1 {
         }
     }
 
+    /**
+     * Elimina un archivo según una ruta.
+     * @param path ruta del archivo.
+     */
     public static void borrarArchivo(String path){
         //Crea un método que se llame borrarArchivo que reciba un path absoluto y elimine el archivo indicado.
         //Pruébalo con el archivo del ejercicio anterior. En la clase File hay métodos para cambiar los atributos del
         //archivo. Prueba a modificar el método haciendo el archivo de solo lectura antes de eliminarlo.
         //¿Qué sucede? ¿Por qué?
 
+        //Sigue pudiendo eliminarse y supongo que tiene que ver con el sistema operativo, que en este caso es Windows.
+
         File fichero = new File(path);
+
+        /*if (!fichero.setReadOnly()){
+            System.out.println("No se pudieron establecer permisos de solo lectura.");
+        }
+
+        System.out.println(fichero.canWrite());
+        System.out.println(fichero.canRead());
+        System.out.println(fichero.canExecute());*/
 
         if (fichero.isFile()){
             try{
@@ -169,16 +206,61 @@ public class ejercicio1_1 {
         }
     }
 
+    /**
+     * Elimina un directorio según una ruta.
+     * @param ruta ruta del directorio a eliminar.
+     */
     public static void eliminarDirectorio(String ruta){
         //Crea un método eliminarDirectorio que reciba una ruta y elimine el directorio indicado por ella.
-        //¿Elimina directorios con contenido? ¿Cómo se puede solucionar? Modifica el método para que elimine directorios
-        //que contengan solo archivos o estén vacíos e indique que no puede hacerlo si contienen otros directorios.
+        //¿Elimina directorios con contenido? ¿Cómo se puede solucionar?
+        // No elimina directorios con contenido.
 
         File dir = new File(ruta);
 
         try{
 
             if (dir.isDirectory()){
+                if (dir.delete()){
+                    System.out.println("Directorio eliminado satisfactoriamente.");
+                }else{
+                    System.out.println("No se pudo eliminar el directorio");
+                }
+            }else{
+                System.out.println("La ruta no se corresponde con un directorio.");
+            }
+
+        }catch (SecurityException e){
+            System.err.println("No tienes permisos para eliminar el directorio.");
+        }
+    }
+
+    /**
+     * Elimina un directorio según una ruta y los archivos que haya dentro siempre y cuando no haya otros directorios.
+     * @param ruta ruta del directorio a eliminar.
+     */
+    public static void eliminarDirectorioModificado(String ruta){
+        // Modifica el método para que elimine directorios que contengan solo archivos o estén vacíos e indique que no
+        // puede hacerlo si contienen otros directorios.
+
+        File dir = new File(ruta);
+
+        try{
+
+            if (dir.isDirectory()){
+
+                File[] ficheros = dir.listFiles();
+
+                for(File file : ficheros){
+                    if (file.isDirectory()){
+                        System.out.println("No se puede eliminar un directorio que contenga otros directorios.");
+                        return;
+                    }
+                }
+
+                for (File file : ficheros){
+                    borrarArchivo(file.getPath());
+                }
+
                 if (dir.delete()){
                     System.out.println("Directorio eliminado satisfactoriamente.");
                 }else{
@@ -209,7 +291,54 @@ public class ejercicio1_1 {
     //Cada elemento debe ir en una línea y llevar delante un texto que indique a qué
     //se refiere.
 
+}
 
+class ShowInfo extends File{
 
+    public ShowInfo(String pathname) {
+        super(pathname);
+    }
+
+    public ShowInfo(String parent, String child) {
+        super(parent, child);
+    }
+
+    public ShowInfo(File parent, String child) {
+        super(parent, child);
+    }
+
+    public ShowInfo(URI uri) {
+        super(uri);
+    }
+
+    public String showInfo() {
+        StringBuilder strb = new StringBuilder();
+        strb.append("Nombre: ").append(getName()).append("\n");
+        strb.append("Ruta: ").append(getPath()).append("\n");
+        strb.append("Ruta Absoluta: ").append(getAbsolutePath()).append("\n");
+        strb.append("¿Se puede leer? ").append(canRead()).append("\n");
+        strb.append("¿Se puede escribir? ").append(canWrite()).append("\n");
+
+        if (isFile()) {
+            strb.append("Tamaño: ").append(length()).append(" bytes").append("\n");
+            strb.append("¿Es un directorio? No").append("\n");
+            strb.append("¿Es un fichero? Sí").append("\n");
+        } else if (isDirectory()) {
+            strb.append("¿Es un directorio? Sí").append("\n");
+            strb.append("¿Es un fichero? No").append("\n");
+
+            File[] ficheros = listFiles();
+            if (ficheros != null && ficheros.length > 0) {
+                strb.append("Contenidos del directorio:").append("\n");
+                for (File fichero : ficheros) {
+                    strb.append("  - ").append(fichero.getName()).append("\n");
+                }
+            }
+        } else {
+            strb.append("No es ni un directorio ni un fichero.").append("\n");
+        }
+
+        return strb.toString();
+    }
 }
 
