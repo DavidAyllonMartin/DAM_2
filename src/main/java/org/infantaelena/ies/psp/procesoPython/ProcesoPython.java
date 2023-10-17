@@ -1,10 +1,10 @@
-package org.infantaelena.ies.psp.ejerciciosRepaso.procesoPython;
+package org.infantaelena.ies.psp.procesoPython;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Proceso_Python {
+public class ProcesoPython {
     public static void main(String[] args) {
 
         ProcessBuilder pb = new ProcessBuilder("python", "src/main/resources/proceso_python.py");

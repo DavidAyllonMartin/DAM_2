@@ -4,7 +4,6 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.StringJoiner;
-
 public class Player {
     private String playerName;
     private String position;
@@ -17,6 +16,7 @@ public class Player {
     private int draftYear;
     private String college;
 
+    //Constructors
     public Player() {
         this.playerName = "";
         this.position = "";
@@ -29,20 +29,8 @@ public class Player {
         this.draftYear = 0;
         this.college = "";
     }
-    public Player(String playerName){
-        this.playerName = playerName;
-        this.position = "";
-        this.team = "";
-        this.rookie = false;
-        this.age = 0;
-        this.seasonsExperience = 0;
-        this.pickRound = 0;
-        this.number = 0;
-        this.draftYear = 0;
-        this.college = "";
-    }
     public Player(String playerName, String position, String team, boolean rookie, double age, int seasonsExperience, int pickRound, int number, int draftYear, String college) {
-        this(playerName);
+        this.playerName = playerName;
         this.position = position;
         this.team = team;
         this.rookie = rookie;
@@ -54,6 +42,7 @@ public class Player {
         this.college = college;
     }
 
+    //Getters and setters
     public String getPlayerName() {
         return playerName;
     }
@@ -112,25 +101,28 @@ public class Player {
         this.college = college;
     }
 
-    //Métodos
+    //Methods
 
-    //1.4.10
-    public static boolean savePlayersCSV(Player[] players, String path){
-
+    //1.4.11
+    /**
+     * Reads an array of Player objects and saves them to a .csv file.
+     * @param players Array of Player objects to be saved
+     * @param path Path of the csv file
+     * @return Returns true if it has managed to save all the players, and false if there has been any error with path or players
+     * @throws IOException Throws an IOException if an I/O error occurs while writing
+     */
+    public static boolean savePlayersCSV(Player[] players, String path) throws IOException{
         boolean saved = true;
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
-
-            for (Player player : players){
-
-                bw.write(playerToCSVLine(player));
-                bw.newLine();
-
+        Path p = checkPathFile(path);
+        if (p != null && players != null){
+            try (BufferedWriter bw = Files.newBufferedWriter(p)) {
+                for (Player player : players) {
+                    bw.write(playerToCSVLine(player));
+                    bw.newLine();
+                }
             }
-
-        } catch (IOException e) {
+        }else {
             saved = false;
-            throw new RuntimeException(e);
         }
         return saved;
     }
@@ -146,19 +138,19 @@ public class Player {
         int draftYear = player.getDraftYear();
         String college = player.getCollege();
 
-                /*StringBuilder sb = new StringBuilder();
-                sb.append(playerName).append(";")
-                        .append(position).append(";")
-                        .append(team).append(";")
-                        .append(rookie).append(";")
-                        .append(age).append(";")
-                        .append(seasonsExperience).append(";")
-                        .append(pickRound).append(";")
-                        .append(number).append(";")
-                        .append(draftYear).append(";")
-                        .append(college).append(";");
+        /*StringBuilder sb = new StringBuilder();
+        sb.append(playerName).append(";")
+                .append(position).append(";")
+                .append(team).append(";")
+                .append(rookie).append(";")
+                .append(age).append(";")
+                .append(seasonsExperience).append(";")
+                .append(pickRound).append(";")
+                .append(number).append(";")
+                .append(draftYear).append(";")
+                .append(college).append(";");
 
-                String result = sb.toString();*/
+        String result = sb.toString();*/
 
         StringJoiner joiner = new StringJoiner(";");
         joiner.add(playerName)
@@ -171,63 +163,56 @@ public class Player {
                 .add(String.valueOf(number))
                 .add(String.valueOf(draftYear))
                 .add(college);
-
         return joiner.toString();
     }
-
-    public static boolean savePlayer(Player player, String path){
+    //1.4.12
+    /**
+     * Saves a Player object at the end of the specified file.
+     * @param player Player object to be saved
+     * @param path Destination file path
+     * @return Returns true if it has managed to save the player, and false if there has been any error with the path or player
+     * @throws IOException Throws an IOException if an I/O error occurs while writing
+     */
+    public static boolean savePlayer(Player player, String path) throws IOException{
         boolean saved = true;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))){
-
+        Path p = checkPathFile(path);
+        if (p != null && player != null){
+            try (BufferedWriter bw = Files.newBufferedWriter(p, StandardOpenOption.APPEND)){
+                bw.write(playerToCSVLine(player));
+                bw.newLine();
+            }
+        }else {
+            saved = false;
+        }
+        /*try (BufferedReader br = new BufferedReader(new FileReader(path))){
             StringBuilder strb = new StringBuilder();
-
             String line = null;
             while ((line = br.readLine()) != null){
                 strb.append(line).append("\n");
             }
-
             strb.append(playerToCSVLine(player)).append("\n");
-
             //Si declaras el BufferedWriter en el try principal se borra el archivo y cuando intenta leer se encuentra un archivo vacío
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))){
                 bw.write(strb.toString());
             }
-
         } catch (IOException e) {
             saved = false;
-        }
-
+        }*/
         return saved;
     }
-    public static boolean savePlayer(Player player, String path, OpenOption openOption){
+    private static boolean savePlayer(Player player, String path, OpenOption openOption) throws IOException{
         boolean saved = true;
-        Path p = Paths.get(path);
-
-        try (BufferedReader br = Files.newBufferedReader(p)){
-
-            StringBuilder strb = new StringBuilder();
-
-            String line = null;
-            while ((line = br.readLine()) != null){
-                strb.append(line).append("\n");
+        Path p = checkPathFile(path);
+        if (p != null && player != null){
+            try (BufferedWriter bw = Files.newBufferedWriter(p, StandardOpenOption.APPEND, openOption)){
+                bw.write(playerToCSVLine(player));
+                bw.newLine();
             }
-
-            strb.append(playerToCSVLine(player)).append("\n");
-
-            //Si declaras el BufferedWriter en el try principal se borra el archivo y cuando intenta leer se encuentra un archivo vacío
-            try (BufferedWriter bw = Files.newBufferedWriter(p, openOption)){
-                bw.write(strb.toString());
-            }
-
-        } catch (IOException e) {
+        }else {
             saved = false;
         }
-
         return saved;
     }
-
-
     @Override
     public String toString() {
         return "playerName='" + playerName + '\'' +
@@ -254,53 +239,87 @@ public class Player {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         int playersSize = playerArrayList.size();
-
         Player[] players = new Player[playersSize];
-
         for (int i = 0; i < playersSize; i++) {
             players[i] = playerArrayList.get(i);
         }
-
         return players;
     }
-
+    //1.4.13
+    /**
+     * Reads a CSV file with saved Player objects and print them on the screen.
+     * @param path File path
+     */
     public static void showPlayersCSV(String path){
-        Path p = Paths.get(path);
-        try (BufferedReader br = Files.newBufferedReader(p)) {
+        Path p = checkPathFile(path);
+        if (p != null){
+            try (BufferedReader br = Files.newBufferedReader(p)) {
+                String line = null;
+                while ((line = br.readLine()) != null){
+                    String[] atributes = line.split(";");
 
-            String line = null;
-            while ((line = br.readLine()) != null){
-                String[] atributes = line.split(";");
+                    String playerName = atributes[0];
+                    String position = atributes[1];
+                    String team = atributes[2];
+                    boolean rookie = Boolean.getBoolean(atributes[3]);
+                    double age = Double.parseDouble(atributes[4]);
+                    int seasonsExperience = Integer.parseInt(atributes[5]);
+                    int pickRound = Integer.parseInt(atributes[6]);
+                    int number = Integer.parseInt(atributes[7]);
+                    int draftYear = Integer.parseInt(atributes[8]);
+                    String college = atributes[9];
 
-                String playerName = atributes[0];
-                String position = atributes[1];
-                String team = atributes[2];
-                boolean rookie = Boolean.getBoolean(atributes[3]);
-                double age = Double.parseDouble(atributes[4]);
-                int seasonsExperience = Integer.parseInt(atributes[5]);
-                int pickRound = Integer.parseInt(atributes[6]);
-                int number = Integer.parseInt(atributes[7]);
-                int draftYear = Integer.parseInt(atributes[8]);
-                String college = atributes[9];
+                    Player player = new Player(playerName, position, team, rookie, age, seasonsExperience, pickRound, number, draftYear, college);
 
-                Player player = new Player(playerName, position, team, rookie, age, seasonsExperience, pickRound, number, draftYear, college);
-
-                System.out.println(player);
+                    System.out.println(player);
                 }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-
+    }
+    private static Path checkPathFile(String path){
+        if (path == null || path.isEmpty()){
+            return null;
+        }
+        Path p;
+        try {
+            p = Paths.get(path);
+            if (Files.isDirectory(p)){
+                p = null;
+            }
+        }catch (InvalidPathException e){
+            p = null;
+        }
+        return p;
     }
 
-
+    //1.5.1
+    public boolean writePlayerBIN(String path) throws IOException{
+        boolean saved = true;
+        Path p = checkPathFile(path);
+        if (p != null){
+            try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(p, StandardOpenOption.APPEND))){
+                dos.writeUTF(getPlayerName());
+                dos.writeUTF(getPosition());
+                dos.writeUTF(getTeam());
+                dos.writeBoolean(isRookie());
+                dos.writeDouble(getAge());
+                dos.writeInt(getSeasonsExperience());
+                dos.writeInt(getPickRound());
+                dos.writeInt(getNumber());
+                dos.writeInt(getDraftYear());
+                dos.writeUTF(getCollege());
+            }
+        }else {
+            saved = false;
+        }
+        return saved;
+    }
     public static void main(String[] args) {
 
         final String PLAYERS_CSV = "src/main/resources/players.csv";
-
 
         Player[] players = new Player[5];
 
@@ -310,14 +329,21 @@ public class Player {
         players[3] = new Player("Calvin Ridley", "WR", "Jacksonville Jaguars", false, 28.7, 5, 1, 0, 2018, "Alabama");
         players[4] = new Player("Mike Evans", "WR", "Tampa Bay Bucaneers", false, 30.0, 9, 1, 13, 2014, "Texas A&M");
 
-        savePlayersCSV(players, PLAYERS_CSV);
+        try {
+            savePlayersCSV(players, PLAYERS_CSV);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Player player = new Player("Mark Andrews", "TE", "Baltimore Ravens", false, 28.0, 5, 3, 89, 2018, "Oklahoma");
 
-        savePlayer(player, PLAYERS_CSV);
+        try {
+            savePlayer(player, PLAYERS_CSV);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         /*Player[] players = loadPlayersCSV("src/main/resources/players.csv");
-
         for (Player player : players) {
             System.out.println(player);
         }*/
@@ -326,7 +352,11 @@ public class Player {
 
         Player player2 = new Player("Mike Williams", "WR", "Los Angeles Chargers", false, 28.9, 6, 1, 81, 2017, "Clemson");
 
-        savePlayer(player2,PLAYERS_CSV, StandardOpenOption.READ);
-
+        //IllegalArgumentException. No permite OpenOption READ en un BufferedWritter
+        try {
+            savePlayer(player2,PLAYERS_CSV, StandardOpenOption.READ);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
