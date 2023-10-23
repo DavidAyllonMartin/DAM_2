@@ -3,6 +3,7 @@ package org.infantaelena.ies.ad.ejercicios1_4;
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringJoiner;
 public class Player {
     private String playerName;
@@ -30,63 +31,94 @@ public class Player {
         this.college = "";
     }
     public Player(String playerName, String position, String team, boolean rookie, double age, int seasonsExperience, int pickRound, int number, int draftYear, String college) {
-        this.playerName = playerName;
-        this.position = position;
-        this.team = team;
-        this.rookie = rookie;
-        this.age = age;
-        this.seasonsExperience = seasonsExperience;
-        this.pickRound = pickRound;
-        this.number = number;
-        this.draftYear = draftYear;
-        this.college = college;
+        setPlayerName(playerName);
+        setPosition(position);
+        setTeam(team);
+        setRookie(rookie);
+        setAge(age);
+        setSeasonsExperience(seasonsExperience);
+        setPickRound(pickRound);
+        setNumber(number);
+        setDraftYear(draftYear);
+        setCollege(college);
     }
 
     //Getters and setters
     public String getPlayerName() {
         return playerName;
     }
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setPlayerName(String playerName) throws IllegalArgumentException{
+        if (playerName != null && !playerName.trim().isEmpty()) {
+            this.playerName = playerName;
+        } else {
+            throw new IllegalArgumentException("Player name cannot be null or empty.");
+        }
     }
     public String getPosition() {
         return position;
     }
-    public void setPosition(String position) {
-        this.position = position;
+    public void setPosition(String position) throws IllegalArgumentException {
+        if (position != null && !position.trim().isEmpty()) {
+            this.position = position;
+        } else {
+            throw new IllegalArgumentException("Position cannot be null or empty.");
+        }
     }
     public String getTeam() {
         return team;
     }
-    public void setTeam(String team) {
-        this.team = team;
+    public void setTeam(String team) throws IllegalArgumentException{
+        if (team != null && !team.trim().isEmpty()) {
+            this.team = team;
+        } else {
+            throw new IllegalArgumentException("Team cannot be null or empty.");
+        }
     }
     public boolean isRookie() {
         return rookie;
     }
+    public void setRookie(boolean rookie){
+        this.rookie = rookie;
+    }
     public double getAge() {
         return age;
     }
-    public void setAge(double age) {
-        this.age = age;
+    public void setAge(double age) throws IllegalArgumentException{
+        if (age >= 18){
+            this.age = age;
+        }else {
+            throw new IllegalArgumentException("Age cannot be under 18");
+        }
     }
     public int getSeasonsExperience() {
         return seasonsExperience;
     }
-    public void setSeasonsExperience(int seasonsExperience) {
-        this.seasonsExperience = seasonsExperience;
+    public void setSeasonsExperience(int seasonsExperience) throws IllegalArgumentException{
+        if (seasonsExperience >= 0){
+            this.seasonsExperience = seasonsExperience;
+        }else{
+            throw new IllegalArgumentException("Number of seasons cannot be negative");
+        }
     }
     public int getPickRound() {
         return pickRound;
     }
     public void setPickRound(int pickRound) {
-        this.pickRound = pickRound;
+        if (pickRound >= 0 && pickRound <= 7){
+            this.pickRound = pickRound;
+        }else{
+            throw new IllegalArgumentException("Draft round cannot be under 0 or over 7");
+        }
     }
     public int getNumber() {
         return number;
     }
-    public void setNumber(int number) {
-        this.number = number;
+    public void setNumber(int number) throws IllegalArgumentException{
+        if (number >= 0 && number <= 99){
+            this.number = number;
+        }else{
+            throw new IllegalArgumentException("Number cannot be under 0 or over 99");
+        }
     }
     public int getDraftYear() {
         return draftYear;
@@ -98,16 +130,21 @@ public class Player {
         return college;
     }
     public void setCollege(String college) {
-        this.college = college;
+        if (college != null && !college.trim().isEmpty()) {
+            this.college = college;
+        } else {
+            throw new IllegalArgumentException("College cannot be null or empty.");
+        }
     }
 
     //Methods
 
     //1.4.11
     /**
-     * Reads an array of Player objects and saves them to a .csv file.
+     * Reads an array of Player objects and saves them to a CSV file.
+     *
      * @param players Array of Player objects to be saved
-     * @param path Path of the csv file
+     * @param path Path of the CSV file
      * @return Returns true if it has managed to save all the players, and false if there has been any error with path or players
      * @throws IOException Throws an IOException if an I/O error occurs while writing
      */
@@ -168,6 +205,7 @@ public class Player {
     //1.4.12
     /**
      * Saves a Player object at the end of the specified file.
+     *
      * @param player Player object to be saved
      * @param path Destination file path
      * @return Returns true if it has managed to save the player, and false if there has been any error with the path or player
@@ -249,6 +287,7 @@ public class Player {
     //1.4.13
     /**
      * Reads a CSV file with saved Player objects and print them on the screen.
+     *
      * @param path File path
      */
     public static void showPlayersCSV(String path){
@@ -296,6 +335,13 @@ public class Player {
     }
 
     //1.5.1
+    /**
+     * Writes the player data to a binary file.
+     *
+     * @param path The path of the file where the player data will be written
+     * @return True if the data is successfully written or false if the file path is not a file
+     * @throws IOException Throws an IOException if an I/O error occurs during the writing process
+     */
     public boolean writePlayerBIN(String path) throws IOException{
         boolean saved = true;
         Path p = checkPathFile(path);
@@ -314,6 +360,20 @@ public class Player {
             }
         }else {
             saved = false;
+        }
+        return saved;
+    }
+    //1.5.2
+    public static boolean writePlayerListBIN(List<Player> players, String path) throws IOException{
+        boolean saved = true;
+        Path p = checkPathFile(path);
+        if (p != null && players != null){
+            try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(p))){
+
+            }
+            for (Player player : players){
+
+            }
         }
         return saved;
     }
