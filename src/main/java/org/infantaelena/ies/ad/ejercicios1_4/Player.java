@@ -2,10 +2,12 @@ package org.infantaelena.ies.ad.ejercicios1_4;
 
 import java.io.*;
 import java.nio.file.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
-public class Player {
+public class Player implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String playerName;
     private String position;
     private String team;
@@ -16,6 +18,7 @@ public class Player {
     private int number;
     private int draftYear;
     private String college;
+    private LocalDate birthday;
 
     //Constructors
     public Player() {
@@ -29,6 +32,7 @@ public class Player {
         this.number = 0;
         this.draftYear = 0;
         this.college = "";
+        this.birthday = LocalDate.of(1970, 1, 1);
     }
     public Player(String playerName, String position, String team, boolean rookie, double age, int seasonsExperience, int pickRound, int number, int draftYear, String college) {
         setPlayerName(playerName);
@@ -41,6 +45,10 @@ public class Player {
         setNumber(number);
         setDraftYear(draftYear);
         setCollege(college);
+    }
+    public Player(String playerName, String position, String team, boolean rookie, double age, int seasonsExperience, int pickRound, int number, int draftYear, String college, LocalDate birthday) {
+        this(playerName, position, team, rookie, age, seasonsExperience, pickRound, number, draftYear, college);
+        this.birthday = birthday;
     }
 
     //Getters and setters
@@ -136,7 +144,12 @@ public class Player {
             throw new IllegalArgumentException("College cannot be null or empty.");
         }
     }
-
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
     //Methods
 
     //1.4.11
@@ -333,7 +346,6 @@ public class Player {
         }
         return p;
     }
-
     //1.5.1
     /**
      * Writes the player data to a binary file.
@@ -347,36 +359,122 @@ public class Player {
         Path p = checkPathFile(path);
         if (p != null){
             try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(p, StandardOpenOption.APPEND))){
-                dos.writeUTF(getPlayerName());
-                dos.writeUTF(getPosition());
-                dos.writeUTF(getTeam());
-                dos.writeBoolean(isRookie());
-                dos.writeDouble(getAge());
-                dos.writeInt(getSeasonsExperience());
-                dos.writeInt(getPickRound());
-                dos.writeInt(getNumber());
-                dos.writeInt(getDraftYear());
-                dos.writeUTF(getCollege());
+                writePlayerDataToBinaryStream(dos);
             }
         }else {
             saved = false;
         }
         return saved;
     }
+    private void writePlayerDataToBinaryStream(DataOutputStream dos) throws IOException{
+        dos.writeUTF(getPlayerName());
+        dos.writeUTF(getPosition());
+        dos.writeUTF(getTeam());
+        dos.writeBoolean(isRookie());
+        dos.writeDouble(getAge());
+        dos.writeInt(getSeasonsExperience());
+        dos.writeInt(getPickRound());
+        dos.writeInt(getNumber());
+        dos.writeInt(getDraftYear());
+        dos.writeUTF(getCollege());
+    }
     //1.5.2
+    /**
+     * Writes a list of Player objects to a binary file specified by the provided path.
+     *
+     * @param players The list of Player objects to be written to the binary file.
+     * @param path    The path of the binary file where the Player data will be written.
+     * @return true if the operation is successful, false if path does not refer to a file.
+     * @throws IOException If an I/O error occurs.
+     */
     public static boolean writePlayerListBIN(List<Player> players, String path) throws IOException{
         boolean saved = true;
         Path p = checkPathFile(path);
         if (p != null && players != null){
             try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(p))){
-
+                for (Player player : players){
+                    player.writePlayerDataToBinaryStream(dos);
+                }
             }
-            for (Player player : players){
-
-            }
+        }else {
+            saved = false;
         }
         return saved;
     }
+    /**
+     * Reads a list of Player objects from a binary file specified by the provided path.
+     *
+     * @param path The path of the binary file from which Player data will be read.
+     * @return A list of Player objects read from the binary file.
+     * @throws IOException                If an I/O error occurs.
+     * @throws InvalidFileFormatException If the file format is invalid.
+     * @throws IllegalArgumentException   If the provided path does not refer to a file.
+     */
+    public static List<Player> readPlayerListBIN(String path) throws IOException, InvalidFileFormatException{
+        List<Player> players = new ArrayList<>();
+        Path p = checkPathFile(path);
+        if (p != null){
+            Player player = null;
+            try (DataInputStream dis = new DataInputStream(Files.newInputStream(p))){
+                while (true){
+                    String playerName = dis.readUTF();
+                    String position = dis.readUTF();
+                    String team = dis.readUTF();
+                    boolean rookie = dis.readBoolean();
+                    double age = dis.readDouble();
+                    int seasonsExperience = dis.readInt();
+                    int pickRound = dis.readInt();
+                    int number = dis.readInt();
+                    int draftYear = dis.readInt();
+                    String college = dis.readUTF();
+
+                    player = new Player(playerName, position, team, rookie, age, seasonsExperience, pickRound, number, draftYear, college);
+                    players.add(player);
+                }
+            }catch (EOFException e){
+                if (player == null){
+                    throw new InvalidFileFormatException();
+                }
+                //In any other case, end of file reached
+            }
+        }else{
+            throw new IllegalArgumentException("The path must refer to a file");
+        }
+        return players;
+    }
+    //1.5.3
+    public static boolean writePlayerListSerializable(List<Player> players, String path) throws IOException {
+        boolean saved = true;
+        Path p = checkPathFile(path);
+        if (p != null){
+            try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(p))){
+                for (Player player : players){
+                    oos.writeObject(player);
+                }
+            }
+        }else{
+            saved = false;
+        }
+        return saved;
+    }
+    public static List<Player> readPlayerListSerializable(String path) throws IOException, ClassNotFoundException {
+        List<Player> players = new ArrayList<>();
+        Path p = checkPathFile(path);
+        if (p != null){
+            try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(p))){
+                while (true){
+                    Player player = (Player) ois.readObject();
+                    players.add(player);
+                }
+            }catch (EOFException e){
+                //End of file reached
+            }
+        }else{
+            throw new IllegalArgumentException("The path must refer to a file");
+        }
+        return players;
+    }
+
     public static void main(String[] args) {
 
         final String PLAYERS_CSV = "src/main/resources/players.csv";
