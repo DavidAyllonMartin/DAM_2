@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
-public class Player implements Serializable, Externalizable{
+public class Player implements Externalizable{
     private static final long serialVersionUID = 1L;
     private String playerName;
     private String position;
@@ -504,20 +504,32 @@ public class Player implements Serializable, Externalizable{
     }
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        this.playerName = in.readUTF();
-        this.position = in.readUTF();
-        this.team = in.readUTF();
-        this.rookie = in.readBoolean();
-        this.age = in.readDouble();
-        this.seasonsExperience = in.readInt();
-        this.pickRound = in.readInt();
-        this.number = in.readInt();
-        this.draftYear = in.readInt();
-        this.college = in.readUTF();
+        //Lo adecuado es pasar la información que leo por los setter
+        //this.playerName = in.readUTF();
+        setPlayerName(in.readUTF());
+        //this.position = in.readUTF();
+        setPosition(in.readUTF());
+        //this.team = in.readUTF();
+        setTeam(in.readUTF());
+        //this.rookie = in.readBoolean();
+        setRookie(in.readBoolean());
+        //this.age = in.readDouble();
+        setAge(in.readDouble());
+        //this.seasonsExperience = in.readInt();
+        setSeasonsExperience(in.readInt());
+        //this.pickRound = in.readInt();
+        setPickRound(in.readInt());
+        //this.number = in.readInt();
+        setNumber(in.readInt());
+        //this.draftYear = in.readInt();
+        setDraftYear(in.readInt());
+        //this.college = in.readUTF();
+        setCollege(in.readUTF());
         //this.birthday = (LocalDate) in.readObject(); // Read LocalDate like an object
 
         long seconds = in.readLong();
-        this.birthday = LocalDate.ofInstant(Instant.ofEpochSecond(seconds), ZoneOffset.UTC);
+        //this.birthday = LocalDate.ofInstant(Instant.ofEpochSecond(seconds), ZoneOffset.UTC);
+        setBirthday(LocalDate.ofInstant(Instant.ofEpochSecond(seconds), ZoneOffset.UTC));
     }
 
     public static void main(String[] args) {
