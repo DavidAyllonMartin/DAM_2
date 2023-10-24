@@ -1,12 +1,15 @@
-package org.infantaelena.ies.ad.ejercicios1_4;
+package org.infantaelena.ies.ad.ejercicios1_4y1_5;
 
 import java.io.*;
 import java.nio.file.*;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
-public class Player implements Serializable{
+public class Player implements Serializable, Externalizable{
     private static final long serialVersionUID = 1L;
     private String playerName;
     private String position;
@@ -137,7 +140,7 @@ public class Player implements Serializable{
     public String getCollege() {
         return college;
     }
-    public void setCollege(String college) {
+    public void setCollege(String college) throws IllegalArgumentException{
         if (college != null && !college.trim().isEmpty()) {
             this.college = college;
         } else {
@@ -147,7 +150,10 @@ public class Player implements Serializable{
     public LocalDate getBirthday() {
         return birthday;
     }
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(LocalDate birthday) throws IllegalArgumentException{
+        if (birthday == null){
+            throw new IllegalArgumentException("Birthday can not be null");
+        }
         this.birthday = birthday;
     }
     //Methods
@@ -331,21 +337,6 @@ public class Player implements Serializable{
             }
         }
     }
-    private static Path checkPathFile(String path){
-        if (path == null || path.isEmpty()){
-            return null;
-        }
-        Path p;
-        try {
-            p = Paths.get(path);
-            if (Files.isDirectory(p)){
-                p = null;
-            }
-        }catch (InvalidPathException e){
-            p = null;
-        }
-        return p;
-    }
     //1.5.1
     /**
      * Writes the player data to a binary file.
@@ -443,6 +434,15 @@ public class Player implements Serializable{
         return players;
     }
     //1.5.3
+    /**
+     * Writes a list of Player objects to a specified file path in a serializable format.
+     *
+     * @param players the list of Player objects to be written to the file
+     * @param path the file path where the list of Player objects will be written
+     * @return true if the list of Player objects is successfully written to the file,
+     *         false if the file path does not refer to a file
+     * @throws IOException if an I/O error occurs while writing the list of Player objects to the file
+     */
     public static boolean writePlayerListSerializable(List<Player> players, String path) throws IOException {
         boolean saved = true;
         Path p = checkPathFile(path);
@@ -457,6 +457,15 @@ public class Player implements Serializable{
         }
         return saved;
     }
+    /**
+     * Reads a list of Player objects from a specified file path in a serializable format.
+     *
+     * @param path the file path from which the list of Player objects will be read
+     * @return a list of Player objects read from the specified file path
+     * @throws IOException            if an I/O error occurs while reading the list of Player objects from the file
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found during deserialization
+     * @throws IllegalArgumentException if the provided path does not refer to a valid file
+     */
     public static List<Player> readPlayerListSerializable(String path) throws IOException, ClassNotFoundException {
         List<Player> players = new ArrayList<>();
         Path p = checkPathFile(path);
@@ -474,10 +483,47 @@ public class Player implements Serializable{
         }
         return players;
     }
+    //1.5.4
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeUTF(getPlayerName());
+        out.writeUTF(getPosition());
+        out.writeUTF(getTeam());
+        out.writeBoolean(isRookie());
+        out.writeDouble(getAge());
+        out.writeInt(getSeasonsExperience());
+        out.writeInt(getPickRound());
+        out.writeInt(getNumber());
+        out.writeInt(getDraftYear());
+        out.writeUTF(getCollege());
+        //out.writeObject(birthday); // Write LocalDate like an object
+
+        LocalDate birthday = getBirthday();
+        long seconds = birthday.atStartOfDay().toEpochSecond(ZoneOffset.UTC);
+        out.writeLong(seconds);
+    }
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        this.playerName = in.readUTF();
+        this.position = in.readUTF();
+        this.team = in.readUTF();
+        this.rookie = in.readBoolean();
+        this.age = in.readDouble();
+        this.seasonsExperience = in.readInt();
+        this.pickRound = in.readInt();
+        this.number = in.readInt();
+        this.draftYear = in.readInt();
+        this.college = in.readUTF();
+        //this.birthday = (LocalDate) in.readObject(); // Read LocalDate like an object
+
+        long seconds = in.readLong();
+        this.birthday = LocalDate.ofInstant(Instant.ofEpochSecond(seconds), ZoneOffset.UTC);
+    }
 
     public static void main(String[] args) {
 
         final String PLAYERS_CSV = "src/main/resources/players.csv";
+        final String PLAYERS_BIN = "src/main/resources/players.bin";
 
         Player[] players = new Player[5];
 
@@ -487,34 +533,85 @@ public class Player implements Serializable{
         players[3] = new Player("Calvin Ridley", "WR", "Jacksonville Jaguars", false, 28.7, 5, 1, 0, 2018, "Alabama");
         players[4] = new Player("Mike Evans", "WR", "Tampa Bay Bucaneers", false, 30.0, 9, 1, 13, 2014, "Texas A&M");
 
-        try {
+        /*try {
             savePlayersCSV(players, PLAYERS_CSV);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         Player player = new Player("Mark Andrews", "TE", "Baltimore Ravens", false, 28.0, 5, 3, 89, 2018, "Oklahoma");
 
-        try {
+        /*try {
             savePlayer(player, PLAYERS_CSV);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         /*Player[] players = loadPlayersCSV("src/main/resources/players.csv");
         for (Player player : players) {
             System.out.println(player);
         }*/
 
-        showPlayersCSV(PLAYERS_CSV);
+        //showPlayersCSV(PLAYERS_CSV);
 
         Player player2 = new Player("Mike Williams", "WR", "Los Angeles Chargers", false, 28.9, 6, 1, 81, 2017, "Clemson");
 
         //IllegalArgumentException. No permite OpenOption READ en un BufferedWritter
-        try {
+        /*try {
             savePlayer(player2,PLAYERS_CSV, StandardOpenOption.READ);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }*/
+
+        List<Player> playersAL = new ArrayList<>(Arrays.asList(players));
+        playersAL.add(player);
+        playersAL.add(player2);
+
+        /*try {
+            writePlayerListBIN(playersAL, PLAYERS_BIN);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        try {
+            for (Player p : readPlayerListBIN(PLAYERS_BIN)){
+                System.out.println(p);
+            }
+        } catch (IOException | InvalidFileFormatException e) {
+            throw new RuntimeException(e);
+        }*/
+
+        for (Player p : playersAL){
+            p.setBirthday(LocalDate.now());
+        }
+
+        try {
+            writePlayerListSerializable(playersAL, PLAYERS_BIN);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            for (Player p : readPlayerListSerializable(PLAYERS_BIN)){
+                System.out.println(p);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static Path checkPathFile(String path){
+        if (path == null || path.isEmpty()){
+            return null;
+        }
+        Path p;
+        try {
+            p = Paths.get(path);
+            if (Files.isDirectory(p)){
+                p = null;
+            }
+        }catch (InvalidPathException e){
+            p = null;
+        }
+        return p;
     }
 }
