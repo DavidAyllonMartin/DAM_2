@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.infantaelena.ies.ad.ejercicios1_6.dao.pokemon;
 
 import java.io.Externalizable;
@@ -42,6 +38,9 @@ public class Pokemon implements Externalizable {
         setSpecialAttack(specialAttack);
         setSpecialDefense(specialDefense);
         setSpeed(speed);
+    }
+    public Pokemon(String[] atributos){
+        this(atributos[0], Integer.parseInt(atributos[1]), Integer.parseInt(atributos[2]), Integer.parseInt(atributos[3]), Integer.parseInt(atributos[4]), Integer.parseInt(atributos[5]), Integer.parseInt(atributos[6]), Integer.parseInt(atributos[7]));
     }
     //Getters and setters
     public String getName() {
@@ -156,7 +155,7 @@ public class Pokemon implements Externalizable {
     }
 
     @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    public void readExternal(ObjectInput in) throws IOException {
         try {
             setName(in.readUTF());
             setLevel(in.readInt());
@@ -169,5 +168,28 @@ public class Pokemon implements Externalizable {
         } catch (IOException e) {
             throw new IOException("Error occurred while reading Pokemon object: " + e.getMessage());
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Pokemon{" +
+                "Nombre:" + name + "\n" +
+                "Nivel:" + level + "\n" +
+                "HP:" + health + "\n" +
+                "Ataque:" + attack + "\n" +
+                "Defensa:" + defense + "\n" +
+                "Ataque Especial:" + specialAttack + "\n" +
+                "Defensa Especial:" + specialDefense + "\n" +
+                "Velocidad:" + speed + "\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Pokemon pokemon = (Pokemon) o;
+
+        return name.equals(pokemon.name);
     }
 }
