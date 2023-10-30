@@ -4,6 +4,6 @@ package org.infantaelena.ies.ad.ejercicios1_6.dao.pokemon;
  *
  * @author David Ayllón
  */
-class NoMasPokemonsException extends Exception {
+public class NoMasPokemonsException extends Exception {
     
 }

@@ -10,6 +10,7 @@ import java.io.ObjectOutput;
  * @author David Ayllón
  */
 public class Pokemon implements Externalizable {
+    private static final long serialVersionUID = 1L;
     public final int MAX_STAT = 255;
     public final int MIN_STAT = 1;
     public final int MAX_LEVEL = 100;
@@ -64,12 +65,8 @@ public class Pokemon implements Externalizable {
         }
         this.level = level;
     }
-    private boolean isStatInRange(int stat){
-        boolean isCorrect = true;
-        if (stat < MIN_STAT || stat > MAX_STAT){
-            isCorrect = false;
-        }
-        return isCorrect;
+    private boolean isStatOutOfRange(int stat){
+        return stat < MIN_STAT || stat > MAX_STAT;
     }
 
     public int getHealth() {
@@ -77,7 +74,7 @@ public class Pokemon implements Externalizable {
     }
 
     public void setHealth(int health) throws IllegalArgumentException{
-        if (!isStatInRange(health)){
+        if (isStatOutOfRange(health)){
             throw new IllegalArgumentException("Health must be beetween " + MIN_STAT + " and " + MAX_STAT);
         }
         this.health = health;
@@ -88,7 +85,7 @@ public class Pokemon implements Externalizable {
     }
 
     public void setAttack(int attack) throws IllegalArgumentException{
-        if (!isStatInRange(attack)){
+        if (isStatOutOfRange(attack)){
             throw new IllegalArgumentException("Attack must be beetween " + MIN_STAT + " and " + MAX_STAT);
         }
         this.attack = attack;
@@ -99,7 +96,7 @@ public class Pokemon implements Externalizable {
     }
 
     public void setDefense(int defense) throws IllegalArgumentException{
-        if (!isStatInRange(defense)){
+        if (isStatOutOfRange(defense)){
             throw new IllegalArgumentException("Defense must be beetween " + MIN_STAT + " and " + MAX_STAT);
         }
         this.defense = defense;
@@ -110,7 +107,7 @@ public class Pokemon implements Externalizable {
     }
 
     public void setSpecialAttack(int specialAttack) throws IllegalArgumentException{
-        if (!isStatInRange(specialAttack)){
+        if (isStatOutOfRange(specialAttack)){
             throw new IllegalArgumentException("Special attack must be beetween " + MIN_STAT + " and " + MAX_STAT);
         }
         this.specialAttack = specialAttack;
@@ -121,7 +118,7 @@ public class Pokemon implements Externalizable {
     }
 
     public void setSpecialDefense(int specialDefense) throws IllegalArgumentException{
-        if (!isStatInRange(specialDefense)){
+        if (isStatOutOfRange(specialDefense)){
             throw new IllegalArgumentException("Special defense must be beetween " + MIN_STAT + " and " + MAX_STAT);
         }
         this.specialDefense = specialDefense;
@@ -132,7 +129,7 @@ public class Pokemon implements Externalizable {
     }
 
     public void setSpeed(int speed) throws IllegalArgumentException{
-        if (!isStatInRange(speed)){
+        if (isStatOutOfRange(speed)){
             throw new IllegalArgumentException("Speed must be beetween " + MIN_STAT + " and " + MAX_STAT);
         }
         this.speed = speed;
