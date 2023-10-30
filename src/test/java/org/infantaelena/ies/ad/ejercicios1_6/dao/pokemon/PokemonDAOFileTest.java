@@ -52,15 +52,7 @@ class PokemonDAOFileTest {
         assertFalse(pokemonDAOFile.estaVacio());
         assertEquals(1, pokemons.size());
         assertEquals(pokemon, pokemons.get(0));
-        boolean duplicate = false;
-        try {
-            pokemonDAOFile.aniadir(pokemon);
-        } catch (PokemonDuplicadoException e) {
-            duplicate = true;
-        } catch (NoMasPokemonsException e) {
-            //No está implementado en ficheros
-        }
-        assertTrue(duplicate);
+        assertThrows(PokemonDuplicadoException.class, () -> pokemonDAOFile.aniadir(pokemon));
     }
 
     @Test
@@ -102,6 +94,12 @@ class PokemonDAOFileTest {
 
     @Test
     void imprimirPokemonCSV() {
+        PokemonDAOFile pokemonDAOFile = new PokemonDAOFile(path);
+        assertThrows(IllegalArgumentException.class, () -> pokemonDAOFile.imprimirPokemonCSV(null));
+        assertThrows(IllegalArgumentException.class, () -> pokemonDAOFile.imprimirPokemonCSV("src"));
+        assertThrows(RuntimeException.class, () -> pokemonDAOFile.imprimirPokemonCSV("invalid.csv"));
+        assertDoesNotThrow(() -> pokemonDAOFile.imprimirPokemonCSV(this.path.toString()));
+
     }
 
     @Test

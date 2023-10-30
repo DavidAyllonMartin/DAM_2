@@ -93,6 +93,9 @@ public class PokemonDAOFile implements PokemonDAO {
 
     @Override
     public boolean eliminar(Pokemon pokemon) {
+        if (pokemon == null){
+            return false;
+        }
         List<Pokemon> pokemons = leerPokemons();
         boolean removed = pokemons.remove(pokemon);
         if (removed){

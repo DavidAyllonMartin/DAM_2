@@ -1,0 +1,92 @@
+name,gender,birth_year,height,mass,hair_color,skin_color,eye_color,planet,species
+"Luke Skywalker",male,19BBY,172,77,blond,fair,blue,Tatooine,Human
+"Darth Vader",male,41.9BBY,202,136,none,white,yellow,Tatooine,Human
+"Leia Organa",female,19BBY,150,49,brown,light,brown,Alderaan,Human
+"Owen Lars",male,52BBY,178,120,"brown, grey",light,blue,Tatooine,Human
+"Beru Whitesun lars",female,47BBY,165,75,brown,light,blue,Tatooine,Human
+"Biggs Darklighter",male,24BBY,183,84,black,light,brown,Tatooine,Human
+"Obi-Wan Kenobi",male,57BBY,182,77,"auburn, white",fair,blue-gray,Stewjon,Human
+"Anakin Skywalker",male,41.9BBY,188,84,blond,fair,blue,Tatooine,Human
+"Wilhuff Tarkin",male,64BBY,180,0,"auburn, grey",fair,blue,Eriadu,Human
+"Han Solo",male,29BBY,180,80,brown,fair,brown,Corellia,Human
+"Wedge Antilles",male,21BBY,170,77,brown,fair,hazel,Corellia,Human
+"Jek Tono Porkins",male,unknown,180,110,brown,fair,blue,"Bestine IV",Human
+Palpatine,male,82BBY,170,75,grey,pale,yellow,Naboo,Human
+"Boba Fett",male,31.5BBY,183,78.2,black,fair,brown,Kamino,Human
+"Lando Calrissian",male,31BBY,177,79,black,dark,brown,Socorro,Human
+Lobot,male,37BBY,175,79,none,light,blue,Bespin,Human
+"Mon Mothma",female,48BBY,150,0,auburn,fair,blue,Chandrila,Human
+"Arvel Crynyd",male,unknown,0,0,brown,fair,brown,unknown,Human
+"Finis Valorum",male,91BBY,170,0,blond,fair,blue,Coruscant,Human
+"Padmé Amidala",female,46BBY,185,45,brown,light,brown,Naboo,Human
+"Ric Olié",male,unknown,183,0,brown,fair,blue,Naboo,Human
+"Quarsh Panaka",male,62BBY,183,0,black,dark,brown,Naboo,Human
+"Shmi Skywalker",female,72BBY,163,0,black,fair,brown,Tatooine,Human
+"Mace Windu",male,72BBY,188,84,none,dark,brown,"Haruun Kal",Human
+"Gregar Typho",male,unknown,185,85,black,dark,brown,Naboo,Human
+Cordé,female,unknown,157,0,brown,light,brown,Naboo,Human
+"Cliegg Lars",male,82BBY,183,0,brown,fair,blue,Tatooine,Human
+Dormé,female,unknown,165,0,brown,light,brown,Naboo,Human
+Dooku,male,102BBY,193,80,white,fair,brown,Serenno,Human
+"Bail Prestor Organa",male,67BBY,191,0,black,tan,brown,Alderaan,Human
+"Jango Fett",male,66BBY,183,79,black,tan,brown,"Concord Dawn",Human
+"Jocasta Nu",female,unknown,167,0,white,fair,blue,Coruscant,Human
+"Raymus Antilles",male,unknown,188,79,brown,light,brown,Alderaan,Human
+Rex,Male,32BBY,183,79,Blond,Fair,Brown,Corellia,Human
+"Sabine Wren",Female,21BBY,163,50,Black,Light,Brown,Toydaria,Human
+"Din Djarin",Male,32BBY,183,95,Black,Fair,Brown,Endor,Human
+"Cara Dune",Female,29BBY,170,70,Black,Fair,Brown,Champala,Human
+"Bo-Katan Kryze",Female,40BBY,168,55,Red,Fair,Blue,Geonosis,Human
+"Moff Gideon",Male,50BBY,178,80,Black,Fair,Brown,Coruscant,Human
+C-3PO,n/a,112BBY,167,75,n/a,gold,yellow,Tatooine,Droid
+R2-D2,n/a,33BBY,96,32,n/a,"white, blue",red,Naboo,Droid
+R5-D4,n/a,unknown,97,32,n/a,"white, red",red,Tatooine,Droid
+IG-88,none,15BBY,200,140,none,metal,red,unknown,Droid
+"Qui-Gon Jinn",male,92BBY,193,89,brown,fair,blue,unknown,Droid
+R4-P17,female,unknown,96,0,none,"silver, red","red, blue",unknown,Droid
+Chewbacca,male,200BBY,228,112,brown,unknown,blue,Kashyyyk,Wookie
+Tarfful,male,unknown,234,136,brown,brown,blue,Kashyyyk,Wookie
+Greedo,male,44BBY,173,74,n/a,green,black,Rodia,Rodian
+"Jabba Desilijic Tiure",hermaphrodite,600BBY,175,1,n/a,"green-tan, brown",orange,"Nal Hutta",Hutt
+Yoda,male,896BBY,66,17,white,green,brown,unknown,"Yoda's species"
+Grogu,Male,41BBY,66,15,White,Green,Black,unknown,"Yoda's species"
+Bossk,male,53BBY,190,113,none,green,red,Trandosha,Trandoshan
+Ackbar,male,41BBY,180,83,none,"brown mottle",orange,"Mon Cala","Mon Calamari"
+"Wicket Systri Warrick",male,8BBY,88,20,brown,brown,brown,Endor,Ewok
+"Nien Nunb",male,unknown,160,68,none,grey,black,Sullust,Sullustan
+"Nute Gunray",male,unknown,191,90,none,"mottled green",red,"Cato Neimoidia",Neimodian
+"Jar Jar Binks",male,52BBY,196,66,none,orange,orange,Naboo,Gungan
+"Roos Tarpals",male,unknown,224,82,none,grey,orange,Naboo,Gungan
+"Rugor Nass",male,unknown,206,0,none,green,orange,Naboo,Gungan
+Watto,male,unknown,137,0,black,"blue, grey",yellow,Toydaria,Toydarian
+Sebulba,male,unknown,112,40,none,"grey, red",orange,Malastare,Dug
+"Bib Fortuna",male,unknown,180,0,none,pale,pink,Ryloth,Twi'lek
+"Ayla Secura",female,48BBY,178,55,none,blue,hazel,Ryloth,Twi'lek
+"Ratts Tyerel",male,unknown,79,15,none,"grey, blue",unknown,"Aleen Minor",Aleena
+"Dud Bolt",male,unknown,94,45,none,"blue, grey",yellow,Vulpter,Vulptereen
+Gasgano,male,unknown,122,0,none,"white, blue",black,Troiken,Xexto
+"Ben Quadinaros",male,unknown,163,65,none,"grey, green, yellow",orange,Tund,Toong
+Ki-Adi-Mundi,male,92BBY,198,82,white,pale,yellow,Cerea,Cerean
+"Kit Fisto",male,unknown,196,87,none,green,black,"Glee Anselm",Nautolan
+"Eeth Koth",male,unknown,171,0,black,brown,brown,Iridonia,Zabrak
+"Adi Gallia",female,unknown,184,50,none,dark,blue,Coruscant,Tholothian
+"Saesee Tiin",male,unknown,188,0,none,pale,orange,Iktotch,Iktotchi
+"Yarael Poof",male,unknown,264,0,none,white,yellow,Quermia,Quermian
+"Plo Koon",male,22BBY,188,80,none,orange,black,Dorin,"Kel Dor"
+"Mas Amedda",male,unknown,196,0,none,blue,blue,Champala,Chagrian
+"Poggle the Lesser",male,unknown,183,80,none,green,yellow,Geonosis,Geonosian
+"Luminara Unduli",female,58BBY,170,56.2,black,yellow,blue,Mirial,Mirialan
+"Barriss Offee",female,40BBY,166,50,black,yellow,blue,Mirial,Mirialan
+"Zam Wesell",female,unknown,168,55,blonde,"fair, green, yellow",yellow,Zolan,Clawdite
+"Dexter Jettster",male,unknown,198,102,none,brown,yellow,Ojom,Besalisk
+"Lama Su",male,unknown,229,88,none,grey,black,Kamino,Kaminoan
+"Taun We",female,unknown,213,0,none,grey,black,Kamino,Kaminoan
+"Wat Tambor",male,unknown,193,48,none,"green, grey",unknown,Skako,Skakoan
+"San Hill",male,unknown,191,0,none,grey,gold,Muunilinst,Muun
+"Shaak Ti",female,unknown,178,57,none,"red, blue, white",black,Shili,Togruta
+"Ahsoka Tano",Female,36BBY,168,55,None,Orange,Blue,Shili,Togruta
+Grievous,male,unknown,216,159,none,"brown, white","green, yellow",Kalee,Kaleesh
+"Tion Medon",male,unknown,206,80,none,grey,black,Utapau,Pau'an
+"Darth Maul",male,54BBY,175,80,none,red,yellow,Dathomir,Dathomirian
+"Asajj Ventress",Female,54BBY,173,59,None,White,Yellow,Dathomir,Dathomirian
+"Sly Moore",female,unknown,178,48,none,pale,white,Umbara,Umbaran
