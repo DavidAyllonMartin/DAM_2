@@ -169,8 +169,7 @@ public class Pokemon implements Externalizable {
 
     @Override
     public String toString() {
-        return "Pokemon{" +
-                "Nombre:" + name + "\n" +
+        return  "Nombre:" + name + "\n" +
                 "Nivel:" + level + "\n" +
                 "HP:" + health + "\n" +
                 "Ataque:" + attack + "\n" +

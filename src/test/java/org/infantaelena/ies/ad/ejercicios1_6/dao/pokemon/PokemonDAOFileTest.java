@@ -99,18 +99,69 @@ class PokemonDAOFileTest {
         assertThrows(IllegalArgumentException.class, () -> pokemonDAOFile.imprimirPokemonCSV("src"));
         assertThrows(RuntimeException.class, () -> pokemonDAOFile.imprimirPokemonCSV("invalid.csv"));
         assertDoesNotThrow(() -> pokemonDAOFile.imprimirPokemonCSV(this.path.toString()));
-
     }
+
 
     @Test
     void imprimirPokemon() {
+        PokemonDAOFile pokemonDAOFile = new PokemonDAOFile(path);
+
+        // Añadimos un Pokémon para probar la impresión
+        Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
+        try {
+            pokemonDAOFile.aniadir(pokemon);
+        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
+            // No van a saltar
+        }
+
+        String expectedOutput = "Nombre:Pikachu\nNivel:5\nHP:35\nAtaque:55\nDefensa:40\nAtaque Especial:50\nDefensa Especial:50\nVelocidad:90\n";
+        assertEquals(expectedOutput, pokemonDAOFile.leerPokemons("Pikachu").get(0).toString());
     }
 
     @Test
     void leerPokemons() {
+        PokemonDAOFile pokemonDAOFile = new PokemonDAOFile(path);
+
+        Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
+        try {
+            pokemonDAOFile.aniadir(pokemon);
+        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
+            // No van a saltar
+        }
+
+        List<Pokemon> pokemons = pokemonDAOFile.leerPokemons();
+        assertFalse(pokemons.isEmpty());
+        assertEquals(1, pokemons.size());
+        assertEquals(pokemon, pokemons.get(0));
+
+        Pokemon pokemon2 = new Pokemon("Bulbasaur", 100, 35, 55, 40, 50, 50, 90);
+        try {
+            pokemonDAOFile.aniadir(pokemon2);
+        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
+            // No van a saltar
+        }
+
+        pokemons = pokemonDAOFile.leerPokemons();
+        assertFalse(pokemons.isEmpty());
+        assertEquals(2, pokemons.size());
+        assertEquals(pokemon, pokemons.get(0));
+        assertEquals(pokemon2, pokemons.get(1));
     }
 
     @Test
-    void testLeerPokemons() {
+    void LeerPokemonsConString() {
+        PokemonDAOFile pokemonDAOFile = new PokemonDAOFile(path);
+
+        Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
+        try {
+            pokemonDAOFile.aniadir(pokemon);
+        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
+            // No van a saltar
+        }
+
+        List<Pokemon> pokemons = pokemonDAOFile.leerPokemons("achu");
+        assertFalse(pokemons.isEmpty());
+        assertEquals(1, pokemons.size());
+        assertEquals(pokemon, pokemons.get(0));
     }
 }

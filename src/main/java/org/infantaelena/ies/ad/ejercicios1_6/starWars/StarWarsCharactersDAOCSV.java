@@ -8,10 +8,10 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarWarsCharactersDAO_CSV implements StarWarsCharactersDAO {
+public class StarWarsCharactersDAOCSV implements StarWarsCharactersDAO {
     private Path filePath;
 
-    public StarWarsCharactersDAO_CSV(Path filePath) {
+    public StarWarsCharactersDAOCSV(Path filePath) {
         setFilePath(filePath);
     }
 
@@ -110,4 +110,3 @@ public class StarWarsCharactersDAO_CSV implements StarWarsCharactersDAO {
         }
     }
 }
-

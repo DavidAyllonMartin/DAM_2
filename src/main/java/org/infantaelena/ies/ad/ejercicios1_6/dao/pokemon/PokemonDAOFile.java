@@ -62,11 +62,20 @@ public class PokemonDAOFile implements PokemonDAO {
                 throw new PokemonDuplicadoException();
             }
         }
-        try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(getAlmacen()))){
-            oos.writeObject(pokemon);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (pokemons.isEmpty()){
+            try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(getAlmacen(), StandardOpenOption.APPEND))){
+                oos.writeObject(pokemon);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else {
+            try(AppendableObjectOutputStream aoos = new AppendableObjectOutputStream(Files.newOutputStream(getAlmacen(), StandardOpenOption.APPEND))){
+                aoos.writeObject(pokemon);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 
     private static String getCSVLine(Pokemon pokemon) {
@@ -168,7 +177,6 @@ public class PokemonDAOFile implements PokemonDAO {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
         return pokemons;
     }
 
