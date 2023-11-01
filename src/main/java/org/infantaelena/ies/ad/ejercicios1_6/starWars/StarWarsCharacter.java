@@ -1,11 +1,16 @@
 package org.infantaelena.ies.ad.ejercicios1_6.starWars;
 
+import org.infantaelena.ies.ad.ejercicios1_6.starWars.exceptions.InvalidStarWarsParameterException;
+
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.InvalidPropertiesFormatException;
+import java.util.Objects;
 
 public class StarWarsCharacter implements Externalizable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private String gender;
     private String birthYear;
@@ -17,7 +22,20 @@ public class StarWarsCharacter implements Externalizable {
     private String planet;
     private String species;
 
-    public StarWarsCharacter(String name, String gender, String birthYear, int height, double mass, String hairColor, String skinColor, String eyeColor, String planet, String species) {
+    public StarWarsCharacter() {
+        this.name = "";
+        this.gender = "";
+        this.birthYear = "";
+        this.height = 0;
+        this.mass = 0.0;
+        this.hairColor = "";
+        this.skinColor = "";
+        this.eyeColor = "";
+        this.planet = "";
+        this.species = "";
+    }
+
+    public StarWarsCharacter(String name, String gender, String birthYear, int height, double mass, String hairColor, String skinColor, String eyeColor, String planet, String species) throws InvalidStarWarsParameterException {
         setName(name);
         setGender(gender);
         setBirthYear(birthYear);
@@ -34,9 +52,9 @@ public class StarWarsCharacter implements Externalizable {
         return name;
     }
 
-    public void setName(String name) throws IllegalArgumentException{
+    public void setName(String name) throws InvalidStarWarsParameterException {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Name cannot be null or empty");
         }
         this.name = name;
     }
@@ -45,9 +63,9 @@ public class StarWarsCharacter implements Externalizable {
         return gender;
     }
 
-    public void setGender(String gender) throws IllegalArgumentException{
+    public void setGender(String gender) throws InvalidStarWarsParameterException {
         if (gender == null || gender.trim().isEmpty()) {
-            throw new IllegalArgumentException("Gender cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Gender cannot be null or empty");
         }
         this.gender = gender;
     }
@@ -56,9 +74,9 @@ public class StarWarsCharacter implements Externalizable {
         return birthYear;
     }
 
-    public void setBirthYear(String birthYear) throws IllegalArgumentException{
+    public void setBirthYear(String birthYear) throws InvalidStarWarsParameterException {
         if (birthYear == null || birthYear.trim().isEmpty()) {
-            throw new IllegalArgumentException("Birth year cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Birth year cannot be null or empty");
         }
         this.birthYear = birthYear;
     }
@@ -67,9 +85,9 @@ public class StarWarsCharacter implements Externalizable {
         return height;
     }
 
-    public void setHeight(int height) throws IllegalArgumentException{
-        if (height <= 0) {
-            throw new IllegalArgumentException("Height must be a positive non-zero value");
+    public void setHeight(int height) throws InvalidStarWarsParameterException {
+        if (height < 0) {
+            throw new InvalidStarWarsParameterException("Height must be a positive non-zero value");
         }
         this.height = height;
     }
@@ -78,9 +96,9 @@ public class StarWarsCharacter implements Externalizable {
         return mass;
     }
 
-    public void setMass(double mass) throws IllegalArgumentException{
-        if (mass <= 0) {
-            throw new IllegalArgumentException("Mass must be a positive non-zero value");
+    public void setMass(double mass) throws InvalidStarWarsParameterException {
+        if (mass < 0) {
+            throw new InvalidStarWarsParameterException("Mass must be a positive non-zero value");
         }
         this.mass = mass;
     }
@@ -89,9 +107,9 @@ public class StarWarsCharacter implements Externalizable {
         return hairColor;
     }
 
-    public void setHairColor(String hairColor) throws IllegalArgumentException{
+    public void setHairColor(String hairColor) throws InvalidStarWarsParameterException {
         if (hairColor == null || hairColor.trim().isEmpty()) {
-            throw new IllegalArgumentException("Hair color cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Hair color cannot be null or empty");
         }
         this.hairColor = hairColor;
     }
@@ -100,9 +118,9 @@ public class StarWarsCharacter implements Externalizable {
         return skinColor;
     }
 
-    public void setSkinColor(String skinColor) throws IllegalArgumentException{
+    public void setSkinColor(String skinColor) throws InvalidStarWarsParameterException {
         if (skinColor == null || skinColor.trim().isEmpty()) {
-            throw new IllegalArgumentException("Skin color cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Skin color cannot be null or empty");
         }
         this.skinColor = skinColor;
     }
@@ -111,9 +129,9 @@ public class StarWarsCharacter implements Externalizable {
         return eyeColor;
     }
 
-    public void setEyeColor(String eyeColor) throws IllegalArgumentException{
+    public void setEyeColor(String eyeColor) throws InvalidStarWarsParameterException {
         if (eyeColor == null || eyeColor.trim().isEmpty()) {
-            throw new IllegalArgumentException("Eye color cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Eye color cannot be null or empty");
         }
         this.eyeColor = eyeColor;
     }
@@ -122,9 +140,9 @@ public class StarWarsCharacter implements Externalizable {
         return planet;
     }
 
-    public void setPlanet(String planet) throws IllegalArgumentException{
+    public void setPlanet(String planet) throws InvalidStarWarsParameterException {
         if (planet == null || planet.trim().isEmpty()) {
-            throw new IllegalArgumentException("Planet cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Planet cannot be null or empty");
         }
         this.planet = planet;
     }
@@ -133,9 +151,9 @@ public class StarWarsCharacter implements Externalizable {
         return species;
     }
 
-    public void setSpecies(String species) throws IllegalArgumentException{
+    public void setSpecies(String species) throws InvalidStarWarsParameterException {
         if (species == null || species.trim().isEmpty()) {
-            throw new IllegalArgumentException("Species cannot be null or empty");
+            throw new InvalidStarWarsParameterException("Species cannot be null or empty");
         }
         this.species = species;
     }
@@ -157,6 +175,16 @@ public class StarWarsCharacter implements Externalizable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StarWarsCharacter that = (StarWarsCharacter) o;
+
+        return Objects.equals(name.trim(), that.name.trim());
+    }
+
+    @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeObject(getName());
         out.writeObject(getGender());
@@ -172,15 +200,90 @@ public class StarWarsCharacter implements Externalizable {
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        setName((String) in.readObject());
-        setGender((String) in.readObject());
-        setBirthYear((String) in.readObject());
-        setHeight(in.readInt());
-        setMass(in.readDouble());
-        setHairColor((String) in.readObject());
-        setSkinColor((String) in.readObject());
-        setEyeColor((String) in.readObject());
-        setPlanet((String) in.readObject());
-        setSpecies((String) in.readObject());
+        try {
+            setName((String) in.readObject());
+            setGender((String) in.readObject());
+            setBirthYear((String) in.readObject());
+            setHeight(in.readInt());
+            setMass(in.readDouble());
+            setHairColor((String) in.readObject());
+            setSkinColor((String) in.readObject());
+            setEyeColor((String) in.readObject());
+            setPlanet((String) in.readObject());
+            setSpecies((String) in.readObject());
+        } catch (InvalidStarWarsParameterException e) {
+            throw new InvalidPropertiesFormatException(e);
+        }
+
+    }
+
+    public static class Builder {
+        private String name = "Unknown";
+        private String gender = "Unknown";
+        private String birthYear = "Unknown";
+        private int height = 0;
+        private double mass = 0.0;
+        private String hairColor = "Unknown";
+        private String skinColor = "Unknown";
+        private String eyeColor = "Unknown";
+        private String planet = "Unknown";
+        private String species = "Unknown";
+
+        public Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Builder birthYear(String birthYear) {
+            this.birthYear = birthYear;
+            return this;
+        }
+
+        public Builder height(int height) {
+            this.height = height;
+            return this;
+        }
+
+        public Builder mass(double mass) {
+            this.mass = mass;
+            return this;
+        }
+
+        public Builder hairColor(String hairColor) {
+            this.hairColor = hairColor;
+            return this;
+        }
+
+        public Builder skinColor(String skinColor) {
+            this.skinColor = skinColor;
+            return this;
+        }
+
+        public Builder eyeColor(String eyeColor) {
+            this.eyeColor = eyeColor;
+            return this;
+        }
+
+        public Builder planet(String planet) {
+            this.planet = planet;
+            return this;
+        }
+
+        public Builder species(String species) {
+            this.species = species;
+            return this;
+        }
+
+        public StarWarsCharacter build() throws InvalidStarWarsParameterException {
+            return new StarWarsCharacter(this.name, this.gender, this.birthYear, this.height, this.mass, this.hairColor, this.skinColor, this.eyeColor, this.planet, this.species);
+        }
     }
 }

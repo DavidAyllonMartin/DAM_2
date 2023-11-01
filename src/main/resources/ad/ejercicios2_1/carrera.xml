@@ -1,0 +1,106 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<carrera>
+
+  <participante>
+    <codigo>23-FRT-FAM</codigo>
+    <conductor>
+      <nombre>Macana</nombre>
+      <nombre>Piedro</nombre>
+      <nombre>Roco</nombre>
+    </conductor>
+    <vehiculo>
+      <nombre>El Rocomóvil</nombre>
+      <numero>1</numero>
+      <tiempo>2H23M45S</tiempo>
+    </vehiculo>
+  </participante>
+
+  <participante>
+    <codigo>5-YMN-AMG</codigo>
+    <conductor>
+      <nombre>Los Tenebrosos (humanoide)</nombre>
+      <nombre>Los Tenebrosos (vampiro)</nombre>
+    </conductor>
+    <vehiculo>
+      <nombre>El Espantomóvil</nombre>
+      <numero>2</numero>
+      <tiempo>1H3M40S</tiempo>
+    </vehiculo>
+  </participante>
+  
+  <participante>
+    <codigo>353-KLD-IND</codigo>
+    <conductor>
+      <nombre>Profesor Locovitch</nombre>
+    </conductor>
+    <vehiculo>
+      <nombre>El Auto/Súper Convertible</nombre>
+      <numero>3</numero>
+      <tiempo>3H56M11S</tiempo>
+    </vehiculo>
+  </participante>  
+  
+  <participante>
+    <codigo>88-GTH-IND</codigo>
+    <conductor>
+      <nombre>Barón Hans Fritz</nombre>
+    </conductor>
+    <vehiculo>
+      <nombre>El Stuka Rakuda</nombre>
+      <numero>4</numero>
+      <tiempo>1H58M41S</tiempo>
+    </vehiculo>
+  </participante>  
+  
+  <participante>
+    <codigo>27-HYP-IND</codigo>
+    <conductor>
+      <nombre>Penélope Glamour</nombre>
+    </conductor>
+    <vehiculo>
+      <nombre>El Compact Pussycat</nombre>
+      <numero>5</numero>
+      <tiempo>1H46M19S</tiempo>
+    </vehiculo>
+  </participante>   
+  
+  <participante>
+    <codigo>7-FFD-AMG</codigo>
+    <conductor>
+      <nombre>Sargento Blast</nombre>
+      <nombre>Soldado Meekly</nombre>      
+    </conductor>
+    <vehiculo>
+      <nombre>El Súper Chatarra Special</nombre>
+      <numero>6</numero>
+      <tiempo>4H6M11S</tiempo>
+    </vehiculo>
+  </participante>  
+  
+  <participante>
+    <codigo>28-RTR-AMG</codigo>
+    <conductor>
+      <nombre>Brutus</nombre>
+      <nombre>Listus</nombre>      
+    </conductor>
+    <vehiculo>
+      <nombre>El Troncoswagen</nombre>
+      <numero>10</numero>
+      <tiempo>2H42M22S</tiempo>
+    </vehiculo>
+  </participante>  
+  
+  <participante>
+    <codigo>654-TTS-AMG</codigo>
+    <conductor>
+      <nombre>Pierre Nodoyuna</nombre>
+      <nombre>Patán</nombre>      
+    </conductor>
+    <vehiculo>
+      <nombre>El Súper Perrari</nombre>
+      <numero>00</numero>
+      <tiempo>50H23M44S</tiempo>
+    </vehiculo>
+  </participante>   
+</carrera>
