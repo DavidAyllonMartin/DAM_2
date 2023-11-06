@@ -1,8 +1,8 @@
 package org.infantaelena.ies.psp.ejercicioFilosofos;
 
 public class Filosofo extends Thread{
-    private final Mesa mesa;
-    private final int posicionMesa;
+    private Mesa mesa;
+    private int posicionMesa;
     private final Palillo palilloIzq;
     private final Palillo palilloDer;
 
@@ -13,44 +13,61 @@ public class Filosofo extends Thread{
         this.palilloDer = palilloDer;
     }
 
-    public synchronized boolean cogerPalillos(){
-        if (palilloIzq.estaEnUso() || palilloDer.estaEnUso()){
-            return false;
-        }else {
-            palilloIzq.cogerPalillo();
-            palilloDer.cogerPalillo();
-            return true;
-        }
-    }
-    @Override
-    public void run(){
-        int max = 10;
-        int min = 1;
-
-        while(true){
-            System.out.println("Filósofo " + posicionMesa + "pensando");
-            esperar(max, min);
-            System.out.println("Filósofo " + posicionMesa + "intentando comer");
-            while (!cogerPalillos()){
+    public void cogerPalillos(){
+        synchronized (palilloIzq) {
+            while (palilloIzq.estaEnUso()) {
                 try {
-                    wait();
+                    System.out.println("Filósofo " + posicionMesa + " esperando a su palillo izquierdo");
+                    palilloIzq.wait();
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
-            System.out.println("Filósofo " + posicionMesa + "comiendo");
-            esperar(max, min);
-            palilloIzq.soltarPalillo();
-            palilloDer.soltarPalillo();
-            try {
-                mesa.getFilosofos()[posicionMesa - 1].notify();
-            }catch (NullPointerException e){
-
-            }
-            mesa.getFilosofos()[posicionMesa + 1].notify();
-
+            System.out.println("Filósofo " + posicionMesa + " coge su palillo izquierdo");
+            palilloIzq.cogerPalillo();
         }
 
+        synchronized (palilloDer) {
+            while (palilloDer.estaEnUso()) {
+                try {
+                    System.out.println("Filósofo " + posicionMesa + " esperando a su palillo derecho");
+                    palilloDer.wait();
+                } catch (InterruptedException e) {
+                    palilloIzq.soltarPalillo();
+                    throw new RuntimeException(e);
+                }
+            }
+            System.out.println("Filósofo " + posicionMesa + " coge su palillo derecho");
+            palilloDer.cogerPalillo();
+        }
+    }
+
+    public void soltarPalillos(){
+        synchronized (palilloIzq) {
+            palilloIzq.soltarPalillo();
+            palilloIzq.notifyAll();
+        }
+        synchronized (palilloDer) {
+            palilloDer.soltarPalillo();
+            palilloDer.notifyAll();
+        }
+    }
+
+    @Override
+    public void run(){
+        int max = 3;
+        int min = 1;
+
+        while(true){
+            System.out.println("Filósofo " + posicionMesa + " pensando");
+            esperar(max, min);
+            System.out.println("Filósofo " + posicionMesa + " intentando comer");
+            cogerPalillos();
+            System.out.println("Filósofo " + posicionMesa + " comiendo");
+            esperar(max, min);
+            soltarPalillos();
+            System.out.println("Filósofo " + posicionMesa + " terminó de comer");
+        }
     }
 
     private static void esperar(int max, int min) {
