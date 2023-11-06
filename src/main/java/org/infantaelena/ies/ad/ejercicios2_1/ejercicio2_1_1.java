@@ -39,8 +39,9 @@ public class ejercicio2_1_1 {
 
                 NodeList conductorList = participanteElement.getElementsByTagName("conductor");
                 NodeList vehiculoList = participanteElement.getElementsByTagName("vehiculo");
-
-                String numeroVehiculo = vehiculoList.item(0).getChildNodes().item(3).getTextContent();
+                Element vehiculo = (Element) vehiculoList.item(0);
+                NodeList numeroVehiculoList = vehiculo.getElementsByTagName("numero");
+                String numeroVehiculo = numeroVehiculoList.item(0).getTextContent();
 
                 for (int j = 0; j < conductorList.getLength(); j++) {
                     Node conductorNode = conductorList.item(j);
