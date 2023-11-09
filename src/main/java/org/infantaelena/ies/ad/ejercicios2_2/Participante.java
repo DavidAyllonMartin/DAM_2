@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -91,7 +94,7 @@ public class Participante {
 
     public static void main(String[] args) {
         try {
-            File outputFile = new File("src/main/resources/ad/ejercicios2_1/nuevo_carrera.xml");
+            File outputFile = new File("src/main/resources/ad/ejercicios2_2/nuevo_carrera.xml");
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             Document doc = builder.newDocument();
@@ -113,19 +116,17 @@ public class Participante {
             participante2.agregarConductor("Alex");
             participante2.agregarComoHijo(carreraElemento, doc);
 
-            // Escribir el documento en un archivo
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new FileWriter(outputFile));
-            transformer.transform(source, result);
-
-            // Mostrar el documento por pantalla
-            TransformerFactory transformerFactory2 = TransformerFactory.newInstance();
-            Transformer transformer2 = transformerFactory2.newTransformer();
-            DOMSource source2 = new DOMSource(doc);
-            StreamResult result2 = new StreamResult(System.out);
-            transformer2.transform(source2, result2);
+            StreamResult file = new StreamResult(new FileWriter(outputFile));
+            transformer.transform(source, file);
+            StreamResult console = new StreamResult(System.out);
+            transformer.transform(source, console);
 
         } catch (ParserConfigurationException | TransformerException | IOException e) {
             e.printStackTrace();

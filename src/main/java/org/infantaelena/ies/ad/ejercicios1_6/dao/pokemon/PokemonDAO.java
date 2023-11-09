@@ -1,5 +1,8 @@
 package org.infantaelena.ies.ad.ejercicios1_6.dao.pokemon;
 
+import org.infantaelena.ies.ad.ejercicios2_2.DataAccessException;
+import org.infantaelena.ies.ad.ejercicios2_2.IncompatibleVersionException;
+
 import java.nio.file.NoSuchFileException;
 import java.util.List;
 
@@ -40,8 +43,10 @@ public interface PokemonDAO {
         */
 	public boolean eliminar(Pokemon pokemon);
 
-	
-	/**
+
+    void actualizar(Pokemon p) throws DataAccessException, IncompatibleVersionException;
+
+    /**
         * Escribe en un fichero de texto “csv" la información de un pokemon 
         * separando los campos por puntos y coma.
         * Nombre;nivel;Vida;ataque;defensa;ataqueEspecial;DefensaEspecial;velocidad
