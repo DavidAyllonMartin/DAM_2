@@ -16,10 +16,10 @@ public class HiloEjemploInterrup extends Thread {
 
                 System.out.println("Inicio del bucle del hilo y hago mis cosas.");
                 Thread.sleep(10);
-                System.out.println("Fin del bucle del hilo... aquí ya habríamos terminado de hacer lo necesario y podríamos parar.");
+                System.out.println("Fin del bucle del hilo... aquÃ­ ya habrÃ­amos terminado de hacer lo necesario y podrÃ­amos parar.");
             }
         } catch (InterruptedException e) {
-            System.out.println("HA OCURRIDO UNA EXCEPCIÓN");
+            System.out.println("HA OCURRIDO UNA EXCEPCIÃ“N");
         }
 
         System.out.println("FIN HILO");

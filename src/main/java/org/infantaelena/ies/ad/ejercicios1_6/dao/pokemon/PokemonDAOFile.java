@@ -1,5 +1,8 @@
 package org.infantaelena.ies.ad.ejercicios1_6.dao.pokemon;
 
+import org.infantaelena.ies.ad.ejercicios2_2.DataAccessException;
+import org.infantaelena.ies.ad.ejercicios2_2.IncompatibleVersionException;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -117,6 +120,11 @@ public class PokemonDAOFile implements PokemonDAO {
             }
         }
         return removed;
+    }
+
+    @Override
+    public void actualizar(Pokemon p) throws DataAccessException, IncompatibleVersionException {
+
     }
 
     @Override
