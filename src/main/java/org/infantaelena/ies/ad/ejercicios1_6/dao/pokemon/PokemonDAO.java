@@ -46,25 +46,27 @@ public interface PokemonDAO {
 
     void actualizar(Pokemon p) throws DataAccessException, IncompatibleVersionException;
 
-    /**
-        * Escribe en un fichero de texto “csv" la información de un pokemon 
-        * separando los campos por puntos y coma.
-        * Nombre;nivel;Vida;ataque;defensa;ataqueEspecial;DefensaEspecial;velocidad
-        * 
-        * En caso de existir el fichero, no se borrará, se seguirán añadiendo 
-        * pokemons al final. 
-        * 
-        *	
-        * @param ruta fichero de texto.
-        * @param name
-	    * @param level
-        * @param life
-        * @param attack
-        * @param defense
-        * @param specialAttack
-        * @param specialdefense
-        * @param speed
-        */
+    /*void actualizar(Pokemon p) throws DataAccessException, IncompatibleVersionException;
+
+        /**
+            * Escribe en un fichero de texto “csv" la información de un pokemon
+            * separando los campos por puntos y coma.
+            * Nombre;nivel;Vida;ataque;defensa;ataqueEspecial;DefensaEspecial;velocidad
+            *
+            * En caso de existir el fichero, no se borrará, se seguirán añadiendo
+            * pokemons al final.
+            *
+            *
+            * @param ruta fichero de texto.
+            * @param name
+            * @param level
+            * @param life
+            * @param attack
+            * @param defense
+            * @param specialAttack
+            * @param specialdefense
+            * @param speed
+            */
 	public void pokemonCSV(String ruta, String name, int level, int life, int attack,
                 int defense, int specialAttack, int specialdefense, int speed);
 	

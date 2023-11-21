@@ -25,7 +25,7 @@ public class Ejercicio224 {
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
 
-            Vehiculo vehiculo3 = new Vehiculo("Miguel Aventuras", 8, "3H40M20S");
+            /*Vehiculo vehiculo3 = new Vehiculo("Miguel Aventuras", 8, "3H40M20S");
             List<String> conductores3 = new ArrayList<>();
             conductores3.add("Miguel");
             conductores3.add("Ana");
@@ -33,7 +33,8 @@ public class Ejercicio224 {
             participante3.agregarConductor("Sara");
 
             Element rootElement = doc.getDocumentElement();
-            participante3.agregarComoHijo(rootElement, doc);
+            participante3.agregarComoHijo(rootElement, doc);*/
+            System.out.println(eliminarParticipantePorCodigo(doc, "MAV"));
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

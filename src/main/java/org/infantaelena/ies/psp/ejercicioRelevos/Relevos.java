@@ -40,11 +40,11 @@ public class Relevos {
         Relevos carrera = new Relevos();
         for (Corredor corredor : carrera.getCorredores()){
             corredor.start();
-            try {
+            /*try {
                 corredor.join();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
-            }
+            }*/
         }
         System.out.println("La carrera ha terminado");
     }
