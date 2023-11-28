@@ -1,6 +1,8 @@
 package org.infantaelena.ies.ad.ejercicios1_6.starWars;
 
-import org.infantaelena.ies.ad.ejercicios1_6.starWars.exceptions.*;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.starWars.StarWarsCharacter;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.starWars.StarWarsCharactersDAOCSV;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.starWars.exceptions.*;
 import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.nio.file.Files;

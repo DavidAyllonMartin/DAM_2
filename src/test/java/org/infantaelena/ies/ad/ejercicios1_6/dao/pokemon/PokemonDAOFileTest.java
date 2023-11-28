@@ -1,5 +1,9 @@
 package org.infantaelena.ies.ad.ejercicios1_6.dao.pokemon;
 
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.NoMasPokemonsException;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.Pokemon;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.PokemonDAOFile;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.PokemonDuplicadoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
