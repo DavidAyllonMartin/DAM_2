@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><precipitaciones>
+    <poblacion nombre="Salamanca" provincia="Salamanca">
+        <cantidades>12</cantidades>
+    </poblacion>
+    <poblacion nombre="Zamora" provincia="Zamora">
+        <cantidades>0</cantidades>
+    </poblacion>
+    <poblacion nombre="Béjar" provincia="Salamanca">
+        <cantidades>0</cantidades>
+    </poblacion>
+    <poblacion nombre="Ávila" provincia="Ávila">
+        <cantidades>25</cantidades>
+        <cantidades>10</cantidades>
+    </poblacion>
+    <poblacion nombre="Segovia" provincia="Segovia">
+        <cantidades>0</cantidades>
+    </poblacion>
+    <poblacion nombre="Valladolid" provincia="Valladolid">
+        <cantidades>8</cantidades>
+    </poblacion>
+    <poblacion nombre="Palencia" provincia="Palencia">
+        <cantidades>15</cantidades>
+        <cantidades>10</cantidades>
+    </poblacion>
+    <poblacion nombre="Soria" provincia="Soria">
+        <cantidades>0</cantidades>
+        <cantidades>10</cantidades>
+    </poblacion>
+    <poblacion nombre="León" provincia="León">
+        <cantidades>20</cantidades>
+    </poblacion>
+    
+</precipitaciones>
