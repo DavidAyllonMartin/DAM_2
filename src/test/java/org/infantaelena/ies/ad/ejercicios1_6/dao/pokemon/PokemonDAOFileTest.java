@@ -1,9 +1,8 @@
 package org.infantaelena.ies.ad.ejercicios1_6.dao.pokemon;
 
-import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.NoMasPokemonsException;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.excepciones.*;
 import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.Pokemon;
 import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.PokemonDAOFile;
-import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.PokemonDuplicadoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,15 +26,24 @@ class PokemonDAOFileTest {
     @Test
     void estaVacio() {
         PokemonDAOFile pokemonDAOFile = new PokemonDAOFile(path);
-        boolean isEmpty = pokemonDAOFile.estaVacio();
+        boolean isEmpty = false;
+        try {
+            isEmpty = pokemonDAOFile.estaVacio();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         assertTrue(isEmpty);
         Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
         try {
             pokemonDAOFile.aniadir(pokemon);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
-            //No van a saltar
+        } catch (DataDestFullException | DataAccessException | DuplicateKeyException e) {
+            throw new RuntimeException(e);
         }
-        isEmpty = pokemonDAOFile.estaVacio();
+        try {
+            isEmpty = pokemonDAOFile.estaVacio();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         assertFalse(isEmpty);
     }
 
@@ -49,27 +57,44 @@ class PokemonDAOFileTest {
         Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
         try {
             pokemonDAOFile.aniadir(pokemon);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
-            //No van a saltar
+        } catch (DataDestFullException | DataAccessException | DuplicateKeyException e) {
+            throw new RuntimeException(e);
         }
-        List<Pokemon> pokemons = pokemonDAOFile.leerPokemons();
-        assertFalse(pokemonDAOFile.estaVacio());
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = pokemonDAOFile.leerPokemons();
+        } catch (DataAccessException | IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            assertFalse(pokemonDAOFile.estaVacio());
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         assertEquals(1, pokemons.size());
         assertEquals(pokemon, pokemons.get(0));
-        assertThrows(PokemonDuplicadoException.class, () -> pokemonDAOFile.aniadir(pokemon));
+        assertThrows(DuplicateKeyException.class, () -> pokemonDAOFile.aniadir(pokemon));
     }
 
     @Test
     void eliminar() {
         PokemonDAOFile pokemonDAOFile = new PokemonDAOFile(path);
         Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
-        assertFalse(pokemonDAOFile.eliminar(pokemon));
+        try {
+            assertFalse(pokemonDAOFile.eliminar(pokemon));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         try {
             pokemonDAOFile.aniadir(pokemon);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
-            //No van a saltar
+        } catch (DataDestFullException | DataAccessException | DuplicateKeyException e) {
+            throw new RuntimeException(e);
         }
-        assertTrue(pokemonDAOFile.eliminar(pokemon));
+        try {
+            assertTrue(pokemonDAOFile.eliminar(pokemon));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -114,12 +139,16 @@ class PokemonDAOFileTest {
         Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
         try {
             pokemonDAOFile.aniadir(pokemon);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
-            // No van a saltar
+        } catch (DataDestFullException | DataAccessException | DuplicateKeyException e) {
+            throw new RuntimeException(e);
         }
 
         String expectedOutput = "Nombre:Pikachu\nNivel:5\nHP:35\nAtaque:55\nDefensa:40\nAtaque Especial:50\nDefensa Especial:50\nVelocidad:90\n";
-        assertEquals(expectedOutput, pokemonDAOFile.leerPokemons("Pikachu").get(0).toString());
+        try {
+            assertEquals(expectedOutput, pokemonDAOFile.leerPokemons("Pikachu").get(0).toString());
+        } catch (DataAccessException | IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -129,23 +158,34 @@ class PokemonDAOFileTest {
         Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
         try {
             pokemonDAOFile.aniadir(pokemon);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
-            // No van a saltar
+        } catch (DataDestFullException | DuplicateKeyException | DataAccessException e) {
+            throw new RuntimeException(e);
         }
 
-        List<Pokemon> pokemons = pokemonDAOFile.leerPokemons();
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = pokemonDAOFile.leerPokemons();
+        } catch (DataAccessException | IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        }
         assertFalse(pokemons.isEmpty());
         assertEquals(1, pokemons.size());
         assertEquals(pokemon, pokemons.get(0));
 
         Pokemon pokemon2 = new Pokemon("Bulbasaur", 100, 35, 55, 40, 50, 50, 90);
+
         try {
             pokemonDAOFile.aniadir(pokemon2);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
-            // No van a saltar
+        } catch (DataAccessException | DataDestFullException | DuplicateKeyException e) {
+            throw new RuntimeException(e);
         }
 
-        pokemons = pokemonDAOFile.leerPokemons();
+
+        try {
+            pokemons = pokemonDAOFile.leerPokemons();
+        } catch (DataAccessException | IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        }
         assertFalse(pokemons.isEmpty());
         assertEquals(2, pokemons.size());
         assertEquals(pokemon, pokemons.get(0));
@@ -159,11 +199,16 @@ class PokemonDAOFileTest {
         Pokemon pokemon = new Pokemon("Pikachu", 5, 35, 55, 40, 50, 50, 90);
         try {
             pokemonDAOFile.aniadir(pokemon);
-        } catch (NoMasPokemonsException | PokemonDuplicadoException e) {
+        } catch (DataAccessException | DataDestFullException | DuplicateKeyException e) {
             // No van a saltar
         }
 
-        List<Pokemon> pokemons = pokemonDAOFile.leerPokemons("achu");
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = pokemonDAOFile.leerPokemons("achu");
+        } catch (DataAccessException | IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        }
         assertFalse(pokemons.isEmpty());
         assertEquals(1, pokemons.size());
         assertEquals(pokemon, pokemons.get(0));

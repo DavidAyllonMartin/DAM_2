@@ -1,8 +1,6 @@
 package org.infantaelena.ies.psp.UD1.ejemplos;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class Ejemplo04 {
 
@@ -11,8 +9,11 @@ public class Ejemplo04 {
 Process p = new ProcessBuilder("CMD","/C","DATE").start();
 //escritura
 OutputStream os = p.getOutputStream();
-os.write("15-06-18".getBytes());
-os.flush();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
+        bw.write("15-06-18");
+        bw.flush();
+//os.write("15-06-18".getBytes());
+//os.flush();
 //lectura
 try {
     InputStream is = p.getInputStream();

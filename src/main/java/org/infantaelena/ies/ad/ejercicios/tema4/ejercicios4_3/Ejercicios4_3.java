@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ejercicios4_3 {
+public class Ejercicios4_3 {
     public static void main(String[] args) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.56.101:3306/empleados", "admin00", "alumno")) {
             //mostrarEmpleadosDepartamento(connection, 30);

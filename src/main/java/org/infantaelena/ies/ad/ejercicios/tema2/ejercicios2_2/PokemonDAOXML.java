@@ -1,7 +1,8 @@
 package org.infantaelena.ies.ad.ejercicios.tema2.ejercicios2_2;
 
 import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.Pokemon;
-import org.infantaelena.ies.ad.ejercicios.tema2.ejercicios2_2.excepciones.*;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.PokemonDAO;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.excepciones.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;

@@ -1,7 +1,6 @@
 package org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon;
 
-import org.infantaelena.ies.ad.ejercicios.tema2.ejercicios2_2.excepciones.DataAccessException;
-import org.infantaelena.ies.ad.ejercicios.tema2.ejercicios2_2.excepciones.IncompatibleVersionException;
+import org.infantaelena.ies.ad.ejercicios.tema1.ejercicios1_6.dao.pokemon.excepciones.*;
 
 import java.io.*;
 import java.nio.file.*;
@@ -41,41 +40,50 @@ public class PokemonDAOFile implements PokemonDAO {
     }
 
     @Override
-    public boolean estaVacio() {
+    public boolean estaVacio() throws DataAccessException {
         boolean estaVacio;
-        List<Pokemon> pokemons = leerPokemons();
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = leerPokemons();
+        } catch (IncompatibleVersionException e) {
+            throw new DataAccessException("Fallo de lectura. Almacén incompatible");
+        }
         estaVacio = pokemons.isEmpty();
         return estaVacio;
     }
 
     @Override
     public boolean estaLLeno() {
-        boolean estaLleno = false;
-        return estaLleno;
+        return false;
     }
 
     @Override
-    public void aniadir(Pokemon pokemon) throws NoMasPokemonsException, PokemonDuplicadoException {
+    public void aniadir(Pokemon pokemon) throws DataAccessException, DataDestFullException, DuplicateKeyException {
         if (estaLLeno()){
-            throw new NoMasPokemonsException();
+            throw new DataDestFullException();
         }
-        List<Pokemon> pokemons = leerPokemons();
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = leerPokemons();
+        } catch (IncompatibleVersionException e) {
+            throw new DataAccessException("Fallo de lectura. Almacén incompatible");
+        }
         for (Pokemon pkmn : pokemons){
             if (pkmn.equals(pokemon)){
-                throw new PokemonDuplicadoException();
+                throw new DuplicateKeyException("Pokemon repetido");
             }
         }
         if (pokemons.isEmpty()){
             try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(getAlmacen(), StandardOpenOption.APPEND))){
                 oos.writeObject(pokemon);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new DataAccessException("Fallo de escritura");
             }
         }else {
             try(AppendableObjectOutputStream aoos = new AppendableObjectOutputStream(Files.newOutputStream(getAlmacen(), StandardOpenOption.APPEND))){
                 aoos.writeObject(pokemon);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new DataAccessException("Fallo de escritura");
             }
         }
 
@@ -104,11 +112,16 @@ public class PokemonDAOFile implements PokemonDAO {
     }
 
     @Override
-    public boolean eliminar(Pokemon pokemon) {
+    public boolean eliminar(Pokemon pokemon) throws DataAccessException{
         if (pokemon == null){
             return false;
         }
-        List<Pokemon> pokemons = leerPokemons();
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = leerPokemons();
+        } catch (IncompatibleVersionException e) {
+            throw new DataAccessException("Fallo de lectura. Almacén incompatible");
+        }
         boolean removed = pokemons.remove(pokemon);
         if (removed){
             try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(getAlmacen()))){
@@ -116,7 +129,7 @@ public class PokemonDAOFile implements PokemonDAO {
                     oos.writeObject(pkmn);
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new DataAccessException("Fallo de escritura");
             }
         }
         return removed;
@@ -165,14 +178,19 @@ public class PokemonDAOFile implements PokemonDAO {
 
     @Override
     public void imprimirPokemon(String nombre) {
-        List<Pokemon> pokemons = leerPokemons(nombre);
+        List<Pokemon> pokemons = null;
+        try {
+            pokemons = leerPokemons(nombre);
+        } catch (DataAccessException | IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        }
         for (Pokemon pokemon : pokemons){
             System.out.println(pokemon);
         }
     }
 
     @Override
-    public List<Pokemon> leerPokemons() {
+    public List<Pokemon> leerPokemons() throws DataAccessException, IncompatibleVersionException{
         List<Pokemon> pokemons = new ArrayList<>();
 
         try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(getAlmacen()))) {
@@ -182,14 +200,16 @@ public class PokemonDAOFile implements PokemonDAO {
             }
         } catch (EOFException e){
             //End of file reached
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new DataAccessException("Fallo de lectura.");
+        } catch (ClassNotFoundException e){
+            throw new IncompatibleVersionException();
         }
         return pokemons;
     }
 
     @Override
-    public List<Pokemon> leerPokemons(String nombre) {
+    public List<Pokemon> leerPokemons(String nombre) throws DataAccessException, IncompatibleVersionException{
         List<Pokemon> pokemons = new ArrayList<>();
         nombre = nombre.trim().toLowerCase();
 
@@ -203,10 +223,11 @@ public class PokemonDAOFile implements PokemonDAO {
             }
         } catch (EOFException e){
             //End of file reached
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new DataAccessException("Fallo de lectura.");
+        } catch (ClassNotFoundException e){
+            throw new IncompatibleVersionException();
         }
-
         return pokemons;
     }
 
@@ -244,9 +265,7 @@ public class PokemonDAOFile implements PokemonDAO {
         for (Pokemon pokemon : pokemons) {
             try {
                 pokemonDAOFile.aniadir(pokemon);
-            } catch (NoMasPokemonsException e) {
-                throw new RuntimeException(e);
-            } catch (PokemonDuplicadoException e) {
+            } catch (DataDestFullException | DataAccessException | DuplicateKeyException e) {
                 throw new RuntimeException(e);
             }
         }
