@@ -10,28 +10,28 @@ public class Mesa {
     synchronized void dejarGlobo(Globo globo, String nombre) {
         while (globos.size() >= CAPACIDAD_MAXIMA) {
             try {
-                System.out.println(nombre + " est· esperando para dejar un globo " + globo.getColor() + " en la mesa.");
+                System.out.println(nombre + " est√° esperando para dejar un globo " + globo.getColor() + " en la mesa.");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
         globos.add(globo);
-        System.out.println(nombre + " dejÛ un globo " + globo.getColor() + " en la mesa.");
+        System.out.println(nombre + " dej√≥ un globo " + globo.getColor() + " en la mesa.");
         notifyAll();
     }
 
     synchronized Globo cogerGlobo(String nombre) {
         while (globos.isEmpty()) {
             try {
-                System.out.println(nombre + " est· esperando para coger un globo de la mesa.");
+                System.out.println(nombre + " est√° esperando para coger un globo de la mesa.");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
         Globo globo = globos.remove(0);
-        System.out.println(nombre + " cogiÛ un globo " + globo.getColor() + " de la mesa.");
+        System.out.println(nombre + " cogi√≥ un globo " + globo.getColor() + " de la mesa.");
         notifyAll();
         return globo;
     }

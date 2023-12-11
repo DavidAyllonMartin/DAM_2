@@ -24,13 +24,13 @@ public class Almacen {
         while (getCajasEnElAlmacen() + cajas > CAPACIDAD_ALMACEN){
             try {
                 wait();
-                System.out.println(agricultor + " est· esperando a que haya sitio en el almacÈn.");
+                System.out.println(agricultor + " est√° esperando a que haya sitio en el almac√©n.");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
         setCajasEnElAlmacen(getCajasEnElAlmacen() + cajas);
-        System.out.printf("%s deposita en el almacÈn %d cajas.%n", agricultor, cajas);
+        System.out.printf("%s deposita en el almac√©n %d cajas.%n", agricultor, cajas);
         notifyAll();
     }
 
@@ -38,7 +38,7 @@ public class Almacen {
         while (getCajasEnElAlmacen() - cajas < 0){
             try {
                 wait();
-                System.out.println(cliente + " est· esperando a que haya cajas disponibles para comprar.");
+                System.out.println(cliente + " est√° esperando a que haya cajas disponibles para comprar.");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

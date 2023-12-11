@@ -1,10 +1,9 @@
 package org.infantaelena.ies.ad.ejercicios.tema4.ejercicios4_4;
 
-public class PokemonTema4 {
+public class Pokemon {
 
     //Attributes
     public static final int MAX_STAT = 255;
-    private int id;
     private String name;
     private String type1;
     private String type2;
@@ -18,8 +17,7 @@ public class PokemonTema4 {
     private int speed;
 
     //Constructor
-    public PokemonTema4(int id, String name, String type1, String type2, int evolveId, int generation, int hp, int attack, int defense, int specialAttack, int specialDefense, int speed) {
-        setId(id);
+    public Pokemon(String name, String type1, String type2, int evolveId, int generation, int hp, int attack, int defense, int specialAttack, int specialDefense, int speed) {
         setName(name);
         setType1(type1);
         setType2(type2);
@@ -34,13 +32,6 @@ public class PokemonTema4 {
     }
 
     //Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return this.name;
@@ -154,23 +145,17 @@ public class PokemonTema4 {
     }
 
     public static class Builder {
-        private int id = 0;
         private String name = "unknown";
         private String type1 = "unknown";
         private String type2 = "unknown";
-        private int height = 0;
-        private int weight = 0;
+        private int evolveId = 0;
+        private int generation = 0;
         private int hp = 0;
         private int attack = 0;
         private int defense = 0;
         private int specialAttack = 0;
         private int specialDefense = 0;
         private int speed = 0;
-
-        public Builder id(int id) {
-            this.id = id;
-            return this;
-        }
 
         public Builder name(String name) {
             this.name = name;
@@ -187,13 +172,13 @@ public class PokemonTema4 {
             return this;
         }
 
-        public Builder height(int height) {
-            this.height = height;
+        public Builder evolveId(int evolveId) {
+            this.evolveId = evolveId;
             return this;
         }
 
-        public Builder weight(int weight) {
-            this.weight = weight;
+        public Builder generation(int generation) {
+            this.generation = generation;
             return this;
         }
 
@@ -227,8 +212,8 @@ public class PokemonTema4 {
             return this;
         }
 
-        public PokemonTema4 build() {
-            return new PokemonTema4(id, name, type1, type2, height, weight, hp, attack, defense, specialAttack, specialDefense, speed);
+        public Pokemon build() {
+            return new Pokemon(name, type1, type2, evolveId, generation, hp, attack, defense, specialAttack, specialDefense, speed);
         }
     }
 }
