@@ -13,7 +13,7 @@ import java.util.List;
 
 public class StarWarsCharactersDaoDb implements StarWarsCharactersDAO{
 
-    private final String url = "jdbc:sqlite:sw.sqlite";
+    private final String url = "jdbc:sqlite:src/main/resources/sw.sqlite";
 
     @Override
     public void create(StarWarsCharacter character) throws DataAccessException, DuplicateKeyException {
@@ -34,7 +34,7 @@ public class StarWarsCharactersDaoDb implements StarWarsCharactersDAO{
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) {
+            if (e.getErrorCode() == 19) {
                 throw new DuplicateKeyException("Star Wars character already exists: " + character.getName());
             } else {
                 throw new DataAccessException("Error creating Star Wars character");
@@ -159,6 +159,7 @@ public class StarWarsCharactersDaoDb implements StarWarsCharactersDAO{
 
     public void createTable(){
         try (Connection connection = DriverManager.getConnection(url)) {
+            String drop = "DROP TABLE IF EXISTS StarWarsCharacters;";
             String create = "CREATE TABLE IF NOT EXISTS StarWarsCharacters (name VARCHAR(50) PRIMARY KEY," +
                     "    gender VARCHAR(50)," +
                     "    birthYear VARCHAR(50)," +
@@ -169,8 +170,9 @@ public class StarWarsCharactersDaoDb implements StarWarsCharactersDAO{
                     "    eyeColor VARCHAR(50)," +
                     "    planet VARCHAR(50)," +
                     "    species VARCHAR(50));";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(create)) {
-                preparedStatement.executeUpdate();
+            try (Statement st1 = connection.createStatement(); Statement st2 = connection.createStatement()) {
+                st1.executeUpdate(drop);
+                st2.executeUpdate(create);
             }
         } catch (SQLException e) {
         }
@@ -179,18 +181,5 @@ public class StarWarsCharactersDaoDb implements StarWarsCharactersDAO{
     public static void main(String[] args) {
         StarWarsCharactersDaoDb starWarsCharactersDaoDb = new StarWarsCharactersDaoDb();
         starWarsCharactersDaoDb.createTable();
-        try {
-            starWarsCharactersDaoDb.create(new StarWarsCharacter.Builder().name("Anakin").build());
-            StarWarsCharacter starWarsCharacter = starWarsCharactersDaoDb.read("Anakin");
-            System.out.println(starWarsCharacter);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
-        } catch (DuplicateKeyException e) {
-            throw new RuntimeException(e);
-        } catch (IncompatibleVersionException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidStarWarsParameterException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
