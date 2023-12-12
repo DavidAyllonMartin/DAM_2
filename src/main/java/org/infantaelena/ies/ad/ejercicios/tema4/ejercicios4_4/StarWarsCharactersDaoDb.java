@@ -157,4 +157,40 @@ public class StarWarsCharactersDaoDb implements StarWarsCharactersDAO{
         }
     }
 
+    public void createTable(){
+        try (Connection connection = DriverManager.getConnection(url)) {
+            String create = "CREATE TABLE IF NOT EXISTS StarWarsCharacters (name VARCHAR(50) PRIMARY KEY," +
+                    "    gender VARCHAR(50)," +
+                    "    birthYear VARCHAR(50)," +
+                    "    height INT," +
+                    "    mass DOUBLE," +
+                    "    hairColor VARCHAR(50)," +
+                    "    skinColor VARCHAR(50)," +
+                    "    eyeColor VARCHAR(50)," +
+                    "    planet VARCHAR(50)," +
+                    "    species VARCHAR(50));";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(create)) {
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+        }
+    }
+
+    public static void main(String[] args) {
+        StarWarsCharactersDaoDb starWarsCharactersDaoDb = new StarWarsCharactersDaoDb();
+        starWarsCharactersDaoDb.createTable();
+        try {
+            starWarsCharactersDaoDb.create(new StarWarsCharacter.Builder().name("Anakin").build());
+            StarWarsCharacter starWarsCharacter = starWarsCharactersDaoDb.read("Anakin");
+            System.out.println(starWarsCharacter);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        } catch (DuplicateKeyException e) {
+            throw new RuntimeException(e);
+        } catch (IncompatibleVersionException e) {
+            throw new RuntimeException(e);
+        } catch (InvalidStarWarsParameterException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
