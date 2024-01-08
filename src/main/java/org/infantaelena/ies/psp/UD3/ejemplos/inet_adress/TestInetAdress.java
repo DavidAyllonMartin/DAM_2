@@ -1,4 +1,4 @@
-package org.infantaelena.ies.psp.UD3.ejemplos;
+package org.infantaelena.ies.psp.UD3.ejemplos.inet_adress;
 
 /**
 *
