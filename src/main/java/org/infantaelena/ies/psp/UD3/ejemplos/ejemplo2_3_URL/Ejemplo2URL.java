@@ -1,4 +1,4 @@
-package org.infantaelena.ies.psp.UD3.ejemplos.URL;
+package org.infantaelena.ies.psp.UD3.ejemplos.ejemplo2_3_URL;
 
 /**
 *

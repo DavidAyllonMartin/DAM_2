@@ -1,4 +1,4 @@
-package org.infantaelena.ies.psp.UD3.ejemplos.URL_connection;
+package org.infantaelena.ies.psp.UD3.ejemplos.ejemplo4_5_URL_connection;
 
 /**
 *
