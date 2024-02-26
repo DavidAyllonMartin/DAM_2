@@ -9,7 +9,7 @@ public class Cliente {
 
         Scanner in = new Scanner(System.in);
 
-        try (DatagramSocket servidor = new DatagramSocket((int) (Math.random() * 1000 + 6001))) {
+        try (DatagramSocket servidor = DatagramSocketFactory.createDatagramSocket()) {
 
             System.out.println("Haz tu consulta");
             String entrada = in.nextLine();
